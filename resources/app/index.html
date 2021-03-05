@@ -1,0 +1,184 @@
+
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <!-- Primary Meta Tags -->
+    <title>Vectorworks, Inc. Application Utility</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="title" content="Vectorworks, Inc. Application Utility">
+    <meta name="author" content="Josh Peizer">
+    <meta name="description"
+          content="Application created to create useful utilities for the Vectorworks Application family">
+    <link rel="canonical" href="https://themesberg.com/product/ui-kit/pixel-pro-premium-bootstrap-5-ui-kit">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://demo.themesberg.com/pixel-pro">
+    <meta property="og:title" content="Pixel Pro - Blank page">
+    <meta property="og:description" content="Premium Bootstrap 5 UI Kit featuring over 1000 components and 35 example pages created by Themesberg.">
+    <meta property="og:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/pixel-pro/pixel-pro-preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://demo.themesberg.com/pixel-pro">
+    <meta property="twitter:title" content="Pixel Pro - Blank page">
+    <meta property="twitter:description" content="Premium Bootstrap 5 UI Kit featuring over 1000 components and 35 example pages created by Themesberg.">
+    <meta property="twitter:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/pixel-pro/pixel-pro-preview.jpg">
+
+    <!-- Fontawesome -->
+    <link type="text/css" href="vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+
+    <!-- Glide JS -->
+    <link rel="stylesheet" href="vendor/@glidejs/glide/dist/css/glide.core.min.css">
+    <link rel="stylesheet" href="vendor/@glidejs/glide/dist/css/glide.theme.min.css">
+
+    <!-- Pixel CSS -->
+    <link type="text/css" href="css/pixel.css" rel="stylesheet">
+
+    <!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
+
+</head>
+
+<body class="d-flex flex-column h-100 bg-gray-200">
+<main class="flex-shrink-0">
+    <!-- Preloader -->
+    {{if .Preloader}}
+    {{template "preloader"}}
+    {{end}}
+
+    <!-- Hero -->
+    <section class="section-header" style="padding-top: 1rem; padding-bottom: 1rem">
+        <div class="container">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-12 text-center">
+            <div class="card border-light px-4 text-center">
+                <div class="card-header bg-white pb-0">
+                    <h2 class="h1 mb-3">{{.Title}}</h2>
+                </div>
+                <div class="card-body pt-2 px-0">
+                    {{ range $i, $softwareName := .Softwares }}
+                    {{ $installations := FindInstallationsBySoftware $softwareName }}
+
+                    {{ if eq (len $installations) 0 }}
+                    <!-- Don't event show the table when there are no installations -->
+                    {{ else }}
+                    <h5>{{ $softwareName }}</h5>
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Version</th>
+                            <th scope="col">License</th>
+                            <th class="text-center" scope="col">Actions</th>
+                        </tr>
+                        </thead>
+                        {{ range $index, $element := $installations }}
+                        <tbody>
+                        <tr>
+                            <th scope="row">{{inc $index}}</th>
+                            <td>
+                                <div class="d-flex align-items-left">
+                                    {{.Year}}
+                                </div>
+                            </td>
+                            <td>
+                                {{.License.Serial}}
+                                <div class="d-inline-flex">
+                                    <i class="fas fa-edit mr-3" data-toggle="modal"
+                                       data-placement="top"
+                                       title="Edit Serial" data-target="#modal-form"></i>
+                                    <form action="/editSerial" method="post">
+                                        <input type="hidden" name="softwareName"
+                                               value="{{$softwareName}}">
+                                        <input type="hidden" name="appYear" value="{{.Year}}">
+                                        <input type="hidden" name="serial" value="{{.License.Serial}}">
+                                    </form>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn-group dropstart mb-2 me-2">
+                                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle"
+                                            id="{{$softwareName}}-{{.Year}}"
+                                            aria-haspopup="true"
+                                            data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span class="fas fa-angle-left dropdown-arrow"></span>
+                                        <span>Actions</span>
+                                    </button>
+                                    <ul class="dropdown-menu py-0" aria-labelledby="{{$softwareName}}-{{.Year}}">
+                                        <li><a class="dropdown-item rounded-top"
+                                               href="/CleanUser?softwareName={{$softwareName}}&softwareYear={{.Year}}">
+                                            Clear User Folder
+                                        </a>
+                                        <li><a class="dropdown-item"
+                                               href="/CleanUser?softwareName={{$softwareName}}&softwareYear={{.Year}}">
+                                            Clear User Folder
+                                        </a>
+                                        </li>
+                                        <li>
+                                            <div class="dropdown-divider"></div>
+                                        </li>
+                                        <li><a class="dropdown-item rounded-bottom"
+                                               href="/deleteHandler?softwareName={{$softwareName}}&softwareYear={{.Year}}">
+                                            Nuke Install Files
+                                        </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                        {{end}}
+                    </table>
+                    {{ end }}
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+    </section>
+</main>
+<footer class="footer mt-auto py-1 bg-dark">
+    <div class="container">
+        <span class="text-gray-600 fa-pull-right">
+{{/*            Made by <a href="jpeizer@vectorworks.net">Josh Peizer</a> with ❤*/}}
+            Any questions or issues should be directed to Josh Peizer.
+        </span>
+    </div>
+</footer>
+
+
+<!-- Custom Scripts -->
+<script src="js/scripts.js"></script>
+
+<!-- Core -->
+<script src="vendor/@popperjs/core/dist/umd/popper.min.js"></script>
+<script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="vendor/headroom.js/dist/headroom.min.js"></script>
+
+<!-- Vendor JS -->
+<script src="vendor/onscreen/dist/on-screen.umd.min.js"></script>
+<script src="vendor/nouislider/distribute/nouislider.min.js"></script>
+<script src="vendor/jarallax/dist/jarallax.min.js"></script>
+<script src="vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+<script src="vendor/vivus/dist/vivus.min.js"></script>
+<script src="vendor/chartist/dist/chartist.min.js"></script>
+<script src="vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+<script src="vendor/@glidejs/glide/dist/glide.min.js"></script>
+<script src="vendor/countup.js/dist/countUp.umd.js"></script>
+<script src="vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+<!-- pixel JS -->
+<script src="js/pixel.js"></script>
+
+
+</body>
+
+</html>
