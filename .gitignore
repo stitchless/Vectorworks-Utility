@@ -1,3 +1,7 @@
+# OS trash
+**.DS_Store
+**Thumbs.db
+
 # Binaries for programs and plugins
 *.exe
 *.exe~
@@ -13,3 +17,11 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# Remove bundler specific additions
+bind*
+windows.syso
+output
+
+# IDE
+.idea
