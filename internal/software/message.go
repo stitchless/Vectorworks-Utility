@@ -4,12 +4,13 @@ import (
 	"bytes"
 	"embed"
 	"encoding/json"
+	"fmt"
 	"github.com/asticode/go-astilectron"
 	bootstrap "github.com/asticode/go-astilectron-bootstrap"
 	"html/template"
 )
 
-func GenerateTemplates() {
+func GenerateTemplates(templateFS embed.FS) {
 	// funcMap needed in order to define custom functions within go template
 	funcMap := template.FuncMap{
 		// Increments int by 1 (Used to illustrate table view)
@@ -26,9 +27,8 @@ func GenerateTemplates() {
 	}
 
 	// Gather templates and parse all found template files
-	//go:embed ../../resources/template/*
-	var f embed.FS
-	tmpl = template.Must(template.ParseFS(f, "**/*.html.tmpl")).Funcs(funcMap)
+	tmpl = template.New("test").Funcs(funcMap)
+	tmpl = template.Must(tmpl.ParseFS(templateFS, "**/*.html.tmpl"))
 }
 
 // HandleMessages handles messages
@@ -68,8 +68,10 @@ func software() (t Template, err error) {
 
 	var tpl bytes.Buffer
 	if err = tmpl.ExecuteTemplate(&tpl, "homePage", templateValues); err != nil {
+		fmt.Println("ERROR: AYAYAYA")
 		return
 	}
 	t.Html = tpl.String()
+	fmt.Println(tpl.String())
 	return
 }

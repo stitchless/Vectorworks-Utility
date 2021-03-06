@@ -2,6 +2,7 @@ package software
 
 import (
 	"io/ioutil"
+	"os"
 	"regexp"
 	"strings"
 )
@@ -15,7 +16,7 @@ func FindInstallationYears(software Software) []string {
 
 	// returns all license year numbers found in plist file names from the files variable
 	for _, f := range files {
-		file := strings.Contains(f.Name(), strings.ToLower(software + ".license."))
+		file := strings.Contains(f.Name(), strings.ToLower(software+".license."))
 		if file {
 			year := regexp.MustCompile("[0-9]+").FindString(f.Name())
 			if year != "" {

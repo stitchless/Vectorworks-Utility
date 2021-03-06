@@ -1,6 +1,7 @@
 package main
 
 import (
+	"embed"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -33,8 +34,11 @@ var (
 	w     *astilectron.Window
 )
 
+//go:embed templates/*
+var templateFS embed.FS
+
 func init() {
-	software.GenerateTemplates()
+	software.GenerateTemplates(templateFS)
 }
 
 func main() {
@@ -56,7 +60,6 @@ func main() {
 			SingleInstance:     true,
 			VersionAstilectron: VersionAstilectron,
 			VersionElectron:    VersionElectron,
-			TCPPort:            astikit.IntPtr(12346),
 		},
 		Debug:  *debug,
 		Logger: l,
@@ -103,6 +106,9 @@ func main() {
 				Height:          astikit.IntPtr(700),
 				Width:           astikit.IntPtr(1000),
 				Transparent:     astikit.BoolPtr(false),
+				WebPreferences: &astilectron.WebPreferences {
+					DevTools: astikit.BoolPtr(true),
+				},
 			},
 		}},
 	}); err != nil {
