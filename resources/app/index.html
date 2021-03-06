@@ -41,120 +41,16 @@
 
 </head>
 
-<body class="d-flex flex-column h-100 bg-gray-200">
-<main class="flex-shrink-0">
-    <!-- Preloader -->
-    {{if .Preloader}}
-    {{template "preloader"}}
-    {{end}}
-
-    <!-- Hero -->
-    <section class="section-header" style="padding-top: 1rem; padding-bottom: 1rem">
-        <div class="container">
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-12 text-center">
-            <div class="card border-light px-4 text-center">
-                <div class="card-header bg-white pb-0">
-                    <h2 class="h1 mb-3">{{.Title}}</h2>
-                </div>
-                <div class="card-body pt-2 px-0">
-                    {{ range $i, $softwareName := .Softwares }}
-                    {{ $installations := FindInstallationsBySoftware $softwareName }}
-
-                    {{ if eq (len $installations) 0 }}
-                    <!-- Don't event show the table when there are no installations -->
-                    {{ else }}
-                    <h5>{{ $softwareName }}</h5>
-
-                    <table class="table table-hover">
-                        <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Version</th>
-                            <th scope="col">License</th>
-                            <th class="text-center" scope="col">Actions</th>
-                        </tr>
-                        </thead>
-                        {{ range $index, $element := $installations }}
-                        <tbody>
-                        <tr>
-                            <th scope="row">{{inc $index}}</th>
-                            <td>
-                                <div class="d-flex align-items-left">
-                                    {{.Year}}
-                                </div>
-                            </td>
-                            <td>
-                                {{.License.Serial}}
-                                <div class="d-inline-flex">
-                                    <i class="fas fa-edit mr-3" data-toggle="modal"
-                                       data-placement="top"
-                                       title="Edit Serial" data-target="#modal-form"></i>
-                                    <form action="/editSerial" method="post">
-                                        <input type="hidden" name="softwareName"
-                                               value="{{$softwareName}}">
-                                        <input type="hidden" name="appYear" value="{{.Year}}">
-                                        <input type="hidden" name="serial" value="{{.License.Serial}}">
-                                    </form>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="btn-group dropstart mb-2 me-2">
-                                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                                            id="{{$softwareName}}-{{.Year}}"
-                                            aria-haspopup="true"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                        <span class="fas fa-angle-left dropdown-arrow"></span>
-                                        <span>Actions</span>
-                                    </button>
-                                    <ul class="dropdown-menu py-0" aria-labelledby="{{$softwareName}}-{{.Year}}">
-                                        <li><a class="dropdown-item rounded-top"
-                                               href="/CleanUser?softwareName={{$softwareName}}&softwareYear={{.Year}}">
-                                            Clear User Folder
-                                        </a>
-                                        <li><a class="dropdown-item"
-                                               href="/CleanUser?softwareName={{$softwareName}}&softwareYear={{.Year}}">
-                                            Clear User Folder
-                                        </a>
-                                        </li>
-                                        <li>
-                                            <div class="dropdown-divider"></div>
-                                        </li>
-                                        <li><a class="dropdown-item rounded-bottom"
-                                               href="/deleteHandler?softwareName={{$softwareName}}&softwareYear={{.Year}}">
-                                            Nuke Install Files
-                                        </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                        {{end}}
-                    </table>
-                    {{ end }}
-                    {{end}}
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-        </div>
-    </section>
-</main>
-<footer class="footer mt-auto py-1 bg-dark">
-    <div class="container">
-        <span class="text-gray-600 fa-pull-right">
-{{/*            Made by <a href="jpeizer@vectorworks.net">Josh Peizer</a> with ❤*/}}
-            Any questions or issues should be directed to Josh Peizer.
-        </span>
-    </div>
-</footer>
-
+<body id="content">
+TEMP DATA... should be replaced by template
+<!-- Content area to hold render templates into -->
+</body>
 
 <!-- Custom Scripts -->
 <script src="js/scripts.js"></script>
+<script type="text/javascript">
+    index.init()
+</script>
 
 <!-- Core -->
 <script src="vendor/@popperjs/core/dist/umd/popper.min.js"></script>
@@ -167,8 +63,8 @@
 <script src="vendor/jarallax/dist/jarallax.min.js"></script>
 <script src="vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
 <script src="vendor/vivus/dist/vivus.min.js"></script>
-<script src="vendor/chartist/dist/chartist.min.js"></script>
-<script src="vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
+<!--<script src="vendor/chartist/dist/chartist.min.js"></script>-->
+<!--<script src="vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>-->
 <script src="vendor/@glidejs/glide/dist/glide.min.js"></script>
 <script src="vendor/countup.js/dist/countUp.umd.js"></script>
 <script src="vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
@@ -177,8 +73,5 @@
 
 <!-- pixel JS -->
 <script src="js/pixel.js"></script>
-
-
-</body>
 
 </html>

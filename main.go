@@ -11,7 +11,6 @@ import (
 	"github.com/asticode/go-astikit"
 	"github.com/asticode/go-astilectron"
 	bootstrap "github.com/asticode/go-astilectron-bootstrap"
-
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 )
 
@@ -33,6 +32,10 @@ var (
 	debug = fs.Bool("d", false, "enables the debug mode")
 	w     *astilectron.Window
 )
+
+func init() {
+	software.GenerateTemplates()
+}
 
 func main() {
 	// Create logger

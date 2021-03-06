@@ -1,27 +1,40 @@
-(function(window, document) {
-    'use strict';
-    // document.addEventListener('DOMContentLoaded', () => {
-    //     const buttons = document.getElementsByClassName('fas');
-    //     for (const button of buttons) {
-    //         const form = button.nextElementSibling
-    //         button.addEventListener('click', (event) => {
-    //             form.submit()
-    //         });
-    //     }
-    // })
 
-    // let hiddenInput = document.getElementById('serial');
-    //
-    // let focusHiddenArea = function() {
-    //     hiddenInput.val(' ');
-    //     hiddenInput.focus().select();
-    // };
+let index = {
+    init: () => {
+        // Wait for astilectron to be ready
+        document.addEventListener('astilectron-ready', function () {
+            // Listen
+            index.listen();
 
-    // ['cut', 'copy', 'paste'].forEach(function(event) {
-    //     document.addEventListener(event, function(e) {
-    //         console.log(event);
-    //         focusHiddenArea();
-    //         e.preventDefault();
-    //     });
-    // });
-})(window, document);
+            // Test homepage
+            index.software();
+        })
+    },
+    software: () => {
+        // Create our message
+        let message = {"name": "software"};
+
+        // Preloader can go here...
+        // Send our message
+        astilectron.sendMessage(message, (message) => {
+
+            // check for errors
+            if (message.name === "error") {
+                console.log(message.payload);
+                return
+            }
+            document.getElementById('content').innerHTML = message.payload.html_string
+        });
+    },
+    listen: function () {
+        astilectron.onMessage(function (message) {
+            switch (message.name) {
+                case "about":
+                    return {payload: "payload"};
+                case "check.out.menu":
+                    console.log(message.payload);
+                    break;
+            }
+        });
+    }
+};
