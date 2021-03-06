@@ -2,6 +2,7 @@ package software
 
 import (
 	"bytes"
+	"embed"
 	"encoding/json"
 	"github.com/asticode/go-astilectron"
 	bootstrap "github.com/asticode/go-astilectron-bootstrap"
@@ -25,8 +26,9 @@ func GenerateTemplates() {
 	}
 
 	// Gather templates and parse all found template files
-	tmpl = template.Must(template.ParseGlob(GetWD() + "/resources/app/web/template/*.html.tmpl")).Funcs(funcMap)
-	template.Must(tmpl.ParseGlob(GetWD() + "/resources/app/web/view/*.html.tmpl")).Funcs(funcMap)
+	//go:embed ../../resources/template/*
+	var f embed.FS
+	tmpl = template.Must(template.ParseFS(f, "**/*.html.tmpl")).Funcs(funcMap)
 }
 
 // HandleMessages handles messages
