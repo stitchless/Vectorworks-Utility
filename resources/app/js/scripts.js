@@ -14,7 +14,6 @@ let index = {
         })
     },
     software: () => {
-        console.log("Entered JS Software.")
         // Create our message
         let message = {"name": "software"};
 
@@ -40,6 +39,20 @@ let index = {
                     console.log(message.payload);
                     break;
             }
+        });
+    },
+    editSerial: () => {
+        // Create our message
+        let message = {"name": "editSerial"};
+
+        astilectron.sendMessage(message, (message) => {
+
+            // check for errors
+            if (message.name === "error") {
+                console.log(message.payload);
+                return
+            }
+            document.getElementById('content').innerHTML = message.payload.html_string
         });
     }
 };
