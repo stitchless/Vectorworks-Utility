@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en" class="h-100">
 
@@ -6,8 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <!-- Primary Meta Tags -->
     <title>Vectorworks, Inc. Application Utility</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src *; style-src 'self' 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval' *">
+    <!--    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">-->
 
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="title" content="Vectorworks, Inc. Application Utility">
@@ -16,40 +17,41 @@
           content="Application created to create useful utilities for the Vectorworks Application family">
     <link rel="canonical" href="https://themesberg.com/product/ui-kit/pixel-pro-premium-bootstrap-5-ui-kit">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://demo.themesberg.com/pixel-pro">
-    <meta property="og:title" content="Pixel Pro - Blank page">
-    <meta property="og:description" content="Premium Bootstrap 5 UI Kit featuring over 1000 components and 35 example pages created by Themesberg.">
-    <meta property="og:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/pixel-pro/pixel-pro-preview.jpg">
-
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://demo.themesberg.com/pixel-pro">
-    <meta property="twitter:title" content="Pixel Pro - Blank page">
-    <meta property="twitter:description" content="Premium Bootstrap 5 UI Kit featuring over 1000 components and 35 example pages created by Themesberg.">
-    <meta property="twitter:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/pixel-pro/pixel-pro-preview.jpg">
-
     <!-- Fontawesome -->
     <link type="text/css" href="vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 
-    <!-- Glide JS -->
-    <link rel="stylesheet" href="vendor/@glidejs/glide/dist/css/glide.core.min.css">
-    <link rel="stylesheet" href="vendor/@glidejs/glide/dist/css/glide.theme.min.css">
-
     <!-- Pixel CSS -->
+    <link type="text/css" href="css/preloader.css" rel="stylesheet">
     <link type="text/css" href="css/pixel.css" rel="stylesheet">
 
     <!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
 
 </head>
 
-<body id="content">
-TEMP DATA... should be replaced by template
-<!-- Content area to hold render templates into -->
+<body class="d-flex flex-column h-100 bg-gray-200">
+<main class="flex-shrink-0">
+
+    <!-- Hero -->
+    <section class="section-header" style="padding-top: 1rem; padding-bottom: 1rem">
+        <div id="content" class="container">
+            <!-- Access the preloader -->
+            <preloader></preloader>
+
+        </div>
+    </section>
+</main>
 </body>
+<footer class="footer mt-auto py-1 bg-dark">
+    <div class="container">
+        <span class="text-gray-600 fa-pull-right">
+            Any questions or issues should be directed to Josh Peizer.
+        </span>
+    </div>
+</footer>
+
 
 <!-- Custom Scripts -->
+<script src="js/preloader.js"></script>
 <script src="js/scripts.js"></script>
 <script type="text/javascript">
     index.init()
@@ -58,23 +60,16 @@ TEMP DATA... should be replaced by template
 <!-- Core -->
 <script src="vendor/@popperjs/core/dist/umd/popper.min.js"></script>
 <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="vendor/headroom.js/dist/headroom.min.js"></script>
 
 <!-- Vendor JS -->
 <script src="vendor/onscreen/dist/on-screen.umd.min.js"></script>
 <script src="vendor/nouislider/distribute/nouislider.min.js"></script>
-<script src="vendor/jarallax/dist/jarallax.min.js"></script>
+
 <script src="vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
-<script src="vendor/vivus/dist/vivus.min.js"></script>
-<!--<script src="vendor/chartist/dist/chartist.min.js"></script>-->
-<!--<script src="vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>-->
-<script src="vendor/@glidejs/glide/dist/glide.min.js"></script>
-<script src="vendor/countup.js/dist/countUp.umd.js"></script>
-<script src="vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+
 
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 
 <!-- pixel JS -->
 <script src="js/pixel.js"></script>
-
 </html>

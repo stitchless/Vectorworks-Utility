@@ -1,113 +1,85 @@
 {{define "header"}}
-<!DOCTYPE html>
-<html lang="en" class="h-100">
 
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-    <!-- Primary Meta Tags -->
-    <title>Vectorworks, Inc. Application Utility</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="title" content="Vectorworks, Inc. Application Utility">
-    <meta name="author" content="Josh Peizer">
-    <meta name="description"
-          content="Application created to create useful utilities for the Vectorworks Application family">
-    <link rel="canonical" href="https://themesberg.com/product/ui-kit/pixel-pro-premium-bootstrap-5-ui-kit">
+    <!DOCTYPE html>
+    <html lang="en" class="h-100">
 
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://demo.themesberg.com/pixel-pro">
-    <meta property="og:title" content="Pixel Pro - Blank page">
-    <meta property="og:description" content="Premium Bootstrap 5 UI Kit featuring over 1000 components and 35 example pages created by Themesberg.">
-    <meta property="og:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/pixel-pro/pixel-pro-preview.jpg">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <!-- Primary Meta Tags -->
+        <title>Vectorworks, Inc. Application Utility</title>
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://demo.themesberg.com/pixel-pro">
-    <meta property="twitter:title" content="Pixel Pro - Blank page">
-    <meta property="twitter:description" content="Premium Bootstrap 5 UI Kit featuring over 1000 components and 35 example pages created by Themesberg.">
-    <meta property="twitter:image" content="https://themesberg.s3.us-east-2.amazonaws.com/public/products/pixel-pro/pixel-pro-preview.jpg">
+        <meta http-equiv="Content-Security-Policy"
+              content="default-src *; style-src 'self' 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval' *">
+        <!--    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">-->
 
-    <!-- Favicon -->
-    <link rel="apple-touch-icon" sizes="120x120" href="/static/assets/img/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/static/assets/img/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/assets/img/favicon/favicon-16x16.png">
-    <link rel="manifest" href="/static/assets/img/favicon/site.webmanifest">
-    <link rel="mask-icon" href="/static/assets/img/favicon/safari-pinned-tab.svg" color="#ffffff">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="theme-color" content="#ffffff">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="title" content="Vectorworks, Inc. Application Utility">
+        <meta name="author" content="Josh Peizer">
+        <meta name="description"
+              content="Application created to create useful utilities for the Vectorworks Application family">
+        <link rel="canonical" href="https://themesberg.com/product/ui-kit/pixel-pro-premium-bootstrap-5-ui-kit">
 
-    <!-- Fontawesome -->
-    <link type="text/css" href="/static/vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+        <!-- Fontawesome -->
+        <link type="text/css" href="vendor/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
 
-    <!-- Glide JS -->
-    <link rel="stylesheet" href="/static/vendor/@glidejs/glide/dist/css/glide.core.min.css">
-    <link rel="stylesheet" href="/static/vendor/@glidejs/glide/dist/css/glide.theme.min.css">
+        <!-- Pixel CSS -->
+        <link type="text/css" href="css/preloader.css" rel="stylesheet">
+        <link type="text/css" href="css/pixel.css" rel="stylesheet">
 
-    <!-- Pixel CSS -->
-    <link type="text/css" href="/static/css/pixel.css" rel="stylesheet">
+        <!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
 
-    <!-- NOTICE: You can use the _analytics.html partial to include production code specific code & trackers -->
+    </head>
 
-</head>
-
-<body class="d-flex flex-column h-100 bg-gray-200">
-<main class="flex-shrink-0">
-    <!-- Preloader -->
-    {{if .Preloader}}
-        {{template "preloader"}}
-    {{end}}
+    <body class="d-flex flex-column h-100 bg-gray-200">
+    <main class="flex-shrink-0">
 
     <!-- Hero -->
     <section class="section-header" style="padding-top: 1rem; padding-bottom: 1rem">
-        <div class="container">
-            {{end}}
+    <div id="content" class="container">
+    <!-- Access the preloader -->
+    <preloader></preloader>
+{{end}}
 
 
 
 
 
 
-            {{define "footer"}}
-        </div>
+{{define "footer"}}
+    </div>
     </section>
-</main>
-<footer class="footer mt-auto py-1 bg-dark">
-    <div class="container">
+    </main>
+    </body>
+    <footer class="footer mt-auto py-1 bg-dark">
+        <div class="container">
         <span class="text-gray-600 fa-pull-right">
-{{/*            Made by <a href="jpeizer@vectorworks.net">Josh Peizer</a> with ❤*/}}
             Any questions or issues should be directed to Josh Peizer.
         </span>
-    </div>
-</footer>
+        </div>
+    </footer>
 
 
-<!-- Custom Scripts -->
-<script src="/static/js/scripts.js"></script>
+    <!-- Custom Scripts -->
+    <script src="js/preloader.js"></script>
+    <script src="js/scripts.js"></script>
+    <script type="text/javascript">
+        index.init()
+    </script>
 
-<!-- Core -->
-<script src="/static/vendor/@popperjs/core/dist/umd/popper.min.js"></script>
-<script src="/static/vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="/static/vendor/headroom.js/dist/headroom.min.js"></script>
+    <!-- Core -->
+    <script src="vendor/@popperjs/core/dist/umd/popper.min.js"></script>
+    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
 
-<!-- Vendor JS -->
-<script src="/static/vendor/onscreen/dist/on-screen.umd.min.js"></script>
-<script src="/static/vendor/nouislider/distribute/nouislider.min.js"></script>
-<script src="/static/vendor/jarallax/dist/jarallax.min.js"></script>
-<script src="/static/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
-<script src="/static/vendor/vivus/dist/vivus.min.js"></script>
-<script src="/static/vendor/chartist/dist/chartist.min.js"></script>
-<script src="/static/vendor/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js"></script>
-<script src="/static/vendor/@glidejs/glide/dist/glide.min.js"></script>
-<script src="/static/vendor/countup.js/dist/countUp.umd.js"></script>
-<script src="/static/vendor/vanillajs-datepicker/dist/js/datepicker.min.js"></script>
+    <!-- Vendor JS -->
+    <script src="vendor/onscreen/dist/on-screen.umd.min.js"></script>
+    <script src="vendor/nouislider/distribute/nouislider.min.js"></script>
 
-<script async defer src="https://buttons.github.io/buttons.js"></script>
-
-<!-- pixel JS -->
-<script src="/static/assets/js/pixel.js"></script>
+    <script src="vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
 
 
-</body>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
 
-</html>
+    <!-- pixel JS -->
+    <script src="js/pixel.js"></script>
+    </html>
 {{end}}

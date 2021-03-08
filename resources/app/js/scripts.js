@@ -1,6 +1,9 @@
-
+console.log("Script Loaded.")
 let index = {
     init: () => {
+        // Initialize the Preloader
+        preload.init()
+
         // Wait for astilectron to be ready
         document.addEventListener('astilectron-ready', function () {
             // Listen
@@ -11,10 +14,11 @@ let index = {
         })
     },
     software: () => {
+        console.log("Entered JS Software.")
         // Create our message
         let message = {"name": "software"};
 
-        // Preloader can go here...
+        preload.show()
         // Send our message
         astilectron.sendMessage(message, (message) => {
 
@@ -23,10 +27,11 @@ let index = {
                 console.log(message.payload);
                 return
             }
+            preload.hide()
             document.getElementById('content').innerHTML = message.payload.html_string
         });
     },
-    listen: function () {
+    listen: () => {
         astilectron.onMessage(function (message) {
             switch (message.name) {
                 case "about":

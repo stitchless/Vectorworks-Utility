@@ -10,7 +10,10 @@ import (
 	"html/template"
 )
 
+var tmpl *template.Template
+
 func GenerateTemplates(templateFS embed.FS) {
+
 	// funcMap needed in order to define custom functions within go template
 	funcMap := template.FuncMap{
 		// Increments int by 1 (Used to illustrate table view)
@@ -26,9 +29,7 @@ func GenerateTemplates(templateFS embed.FS) {
 		"FindInstallationsBySoftware": FindInstallationsBySoftware,
 	}
 
-	// Gather templates and parse all found template files
-	tmpl = template.New("test").Funcs(funcMap)
-	tmpl = template.Must(tmpl.ParseFS(templateFS, "**/*.html.tmpl"))
+	tmpl = template.Must(template.New("homepage.html.tmpl").Funcs(funcMap).ParseFS(templateFS, "**/*.html.tmpl"))
 }
 
 // HandleMessages handles messages
@@ -54,11 +55,26 @@ func HandleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (payload inter
 	return
 }
 
-type Template struct {
+type render struct {
 	Html string `json:"html_string"`
 }
 
-func software() (t Template, err error) {
+type htmlValues struct {
+	Title       string
+	Preloader   bool
+	Description string
+	Softwares   []Software
+	FormData    FormData
+}
+
+type FormData struct {
+	Name   string
+	Year   string
+	Serial string
+}
+
+func software() (r render, err error) {
+	fmt.Println("Entered Software.")
 	templateValues := htmlValues{
 		Preloader:   false,
 		Title:       "Welcome to the Vectorworks Utility Tool",
@@ -68,10 +84,10 @@ func software() (t Template, err error) {
 
 	var tpl bytes.Buffer
 	if err = tmpl.ExecuteTemplate(&tpl, "homePage", templateValues); err != nil {
-		fmt.Println("ERROR: AYAYAYA")
+		fmt.Println("Send Help...")
 		return
 	}
-	t.Html = tpl.String()
+	r.Html = tpl.String()
 	fmt.Println(tpl.String())
 	return
 }

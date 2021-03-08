@@ -46,7 +46,7 @@ func main() {
 	l := log.New(log.Writer(), log.Prefix(), log.Flags())
 
 	// Parse flags
-	fs.Parse(os.Args[1:])
+	_ = fs.Parse(os.Args[1:])
 
 	// Run bootstrap
 	l.Printf("Running app built at %s\n", BuiltAt)
@@ -103,8 +103,8 @@ func main() {
 			Options: &astilectron.WindowOptions{
 				BackgroundColor: astikit.StrPtr("#333"),
 				Center:          astikit.BoolPtr(true),
-				Height:          astikit.IntPtr(700),
-				Width:           astikit.IntPtr(1000),
+				Height:          astikit.IntPtr(750),
+				Width:           astikit.IntPtr(1200),
 				Transparent:     astikit.BoolPtr(false),
 				WebPreferences: &astilectron.WebPreferences {
 					DevTools: astikit.BoolPtr(true),
