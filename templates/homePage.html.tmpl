@@ -1,22 +1,25 @@
 {{ define "homePage" }}
-{{/*    {{template "header" .}}*/}}
     <div class="container" id="content">
         <div class="row justify-content-center">
             <div class="col-12 text-center">
                 <div class="card border-light px-4 text-center">
-                    <div class="card-header bg-white pb-0">
-                        <h2 class="h1 mb-3">{{.Title}}</h2>
+                    <div class="card-header bg-white">
+                        <h2 class="h4 mb-3">Vectorworks Utility App</h2>
                     </div>
                     <div class="card-body pt-2 px-0">
-                        {{ range $i, $softwareName := .Softwares }}
+                        {{/*<!-- Show Table View -->*/}}
+                        {{ range $i, $softwareName := .Softwares -}}
+                            {{/*<!-- Get list of installations for each software -->*/}}
                             {{ $installations := FindInstallationsBySoftware $softwareName }}
-
+                            {{/*<!-- Make sure there are installations -->*/}}
                             {{ if eq (len $installations) 0 }}
-                                <!-- Don't event show the table when there are no installations -->
+                                {{/*<!-- Don't event show the table when there are no installations -->*/}}
                             {{ else }}
-                                <h5>{{ $softwareName }}</h5>
-
+                                {{/*<!-- Display table per installation found -->*/}}
+                                {{/*<!-- Table Label -->*/}}
+                                <h5 class="text-left">{{ $softwareName }}</h5>
                                 <table class="table table-hover">
+                                    {{/*<!-- Table Headers -->*/}}
                                     <thead>
                                     <tr>
                                         <th scope="col">#</th>
@@ -25,69 +28,23 @@
                                         <th class="text-center" scope="col">Actions</th>
                                     </tr>
                                     </thead>
-                                    {{ range $index, $element := $installations }}
-                                        <tbody>
-                                        <tr>
-                                            <th scope="row">{{inc $index}}</th>
-                                            <td>
-                                                <div class="d-flex align-items-left">
-                                                    {{.Year}}
-                                                </div>
-                                            </td>
-                                            <td>
-                                                {{.License.Serial}}
-                                                <div class="d-inline-flex">
-                                                    <i class="fas fa-edit mr-3" data-toggle="modal"
-                                                       data-placement="top"
-                                                       title="Edit Serial" data-target="#modal-form"></i>
-                                                    <form action="/editSerial" method="post">
-                                                        <input type="hidden" name="softwareName"
-                                                               value="{{$softwareName}}">
-                                                        <input type="hidden" name="appYear" value="{{.Year}}">
-                                                        <input type="hidden" name="serial" value="{{.License.Serial}}">
-                                                    </form>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group dropstart mb-2 me-2">
-                                                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle"
-                                                            id="{{$softwareName}}-{{.Year}}"
-                                                            aria-haspopup="true"
-                                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <span class="fas fa-angle-left dropdown-arrow"></span>
-                                                        <span>Actions</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu py-0" aria-labelledby="{{$softwareName}}-{{.Year}}">
-                                                        <li><a class="dropdown-item rounded-top"
-                                                               href="/CleanUser?softwareName={{$softwareName}}&softwareYear={{.Year}}">
-                                                                Clear User Folder
-                                                            </a>
-                                                        <li><a class="dropdown-item"
-                                                               href="/CleanUser?softwareName={{$softwareName}}&softwareYear={{.Year}}">
-                                                                Clear User Folder
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <div class="dropdown-divider"></div>
-                                                        </li>
-                                                        <li><a class="dropdown-item rounded-bottom"
-                                                               href="/deleteHandler?softwareName={{$softwareName}}&softwareYear={{.Year}}">
-                                                                Nuke Install Files
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
+                                    {{/*<!-- Table Body -->*/}}
+                                    <tbody>
+                                    {{ range $index, $install := $installations -}}
+                                        <tr id="{{ $softwareName }}-{{ inc $index }}">
+                                            <th scope="row">{{ inc $index }}</th>
+                                            <td>{{ .Year }}</td>
+                                            <td>{{ .License.Serial }}</td>
+                                            <td>ActionButton</td>
                                         </tr>
-                                        </tbody>
-                                    {{end}}
+                                    {{ end -}}
+                                    </tbody>
                                 </table>
-                            {{ end }}
-                        {{end}}
+                            {{ end -}}
+                        {{ end -}}
                     </div>
                 </div>
             </div>
         </div>
     </div>
-{{/*    {{template "footer"}}*/}}
 {{ end }}
