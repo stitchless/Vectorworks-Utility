@@ -103,10 +103,12 @@ func main() {
 			Options: &astilectron.WindowOptions{
 				BackgroundColor: astikit.StrPtr("#333"),
 				Center:          astikit.BoolPtr(true),
-				Height:          astikit.IntPtr(750),
-				Width:           astikit.IntPtr(1200),
+				Height:          astikit.IntPtr(600),
+				Width:           astikit.IntPtr(780),
 				Transparent:     astikit.BoolPtr(false),
-				WebPreferences: &astilectron.WebPreferences {
+				Resizable:       astikit.BoolPtr(false),
+				Modal:           astikit.BoolPtr(true),
+				WebPreferences: &astilectron.WebPreferences{
 					DevTools: astikit.BoolPtr(true),
 				},
 			},

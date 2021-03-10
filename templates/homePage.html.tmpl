@@ -1,49 +1,59 @@
 {{ define "homePage" }}
-    <div class="container" id="content">
-        <div class="row justify-content-center">
-            <div class="col-12 text-center">
-                <div class="card border-light px-4 text-center">
-                    <div class="card-header bg-white">
-                        <h2 class="h4 mb-3">Vectorworks Utility App</h2>
-                    </div>
-                    <div class="card-body pt-2 px-0">
-                        {{/*<!-- Show Table View -->*/}}
-                        {{ range $i, $softwareName := .Softwares -}}
-                            {{/*<!-- Get list of installations for each software -->*/}}
-                            {{ $installations := FindInstallationsBySoftware $softwareName }}
-                            {{/*<!-- Make sure there are installations -->*/}}
-                            {{ if eq (len $installations) 0 }}
-                                {{/*<!-- Don't event show the table when there are no installations -->*/}}
-                            {{ else }}
-                                {{/*<!-- Display table per installation found -->*/}}
-                                {{/*<!-- Table Label -->*/}}
-                                <h5 class="text-left">{{ $softwareName }}</h5>
-                                <table class="table table-hover">
-                                    {{/*<!-- Table Headers -->*/}}
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Version</th>
-                                        <th scope="col">License</th>
-                                        <th class="text-center" scope="col">Actions</th>
-                                    </tr>
-                                    </thead>
-                                    {{/*<!-- Table Body -->*/}}
-                                    <tbody>
-                                    {{ range $index, $install := $installations -}}
-                                        <tr id="{{ $softwareName }}-{{ inc $index }}">
-                                            <th scope="row">{{ inc $index }}</th>
-                                            <td>{{ .Year }}</td>
-                                            <td>{{ .License.Serial }}</td>
-                                            <td>ActionButton</td>
-                                        </tr>
-                                    {{ end -}}
-                                    </tbody>
-                                </table>
+    <div class="card shadow-sm">
+        <div class="card-header border-bottom border-gray-300">
+            <h2 class="h5 mb-0">Vectorworks Utility App</h2>
+        </div>
+        <div class="card-body">
+            <div class="row align-items-center mb-4">
+                {{/*<!-- Show Table View -->*/}}
+                {{ range $i, $softwareName := .Softwares -}}
+                    {{/*<!-- Get list of installations for each software -->*/}}
+                    {{ $installations := FindInstallationsBySoftware $softwareName }}
+                    {{/*<!-- Make sure there are installations -->*/}}
+                    {{ if eq (len $installations) 0 }}
+                        {{/*<!-- Don't event show the table when there are no installations -->*/}}
+                    {{ else }}
+                        {{/*<!-- Display table per installation found -->*/}}
+                        {{/*<!-- Table Label -->*/}}
+                        <h5 class="text-left">{{ $softwareName }}</h5>
+                        <table class="table table-sm align-middle">
+                            {{/*<!-- Table Headers -->*/}}
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Version</th>
+                                <th scope="col">License</th>
+                                <th scope="col">Actions</th>
+                            </tr>
+                            </thead>
+                            {{/*<!-- Table Body -->*/}}
+                            <tbody>
+                            {{ range $index, $install := $installations -}}
+                                <tr id="{{ $softwareName }}-{{ inc $index }}">
+                                    <th scope="row">{{ inc $index }}</th>
+                                    <td>{{ .Year }}</td>
+                                    <td>
+                                        <!-- Show the Serial number -->
+                                        {{/*                                                <div class="col-8 offset-2 mb-1">*/}}
+                                        {{/*                                                    <div class="input-group input-group-sm">*/}}
+                                        {{/*                                                        <input type="text" class="form-control" id="serial-{{ $index }}" placeholder="{{ .License.Serial }}" aria-label="Serial" aria-describedby="serial-{{ $index }}">*/}}
+                                        {{/*                                                        <span class="input-group-text" id="serial-{{ $index }}"><span class="fal fa-edit"></span></span>*/}}
+                                        {{/*                                                    </div>*/}}
+                                        {{/*                                                </div>*/}}
+                                        {{ .License.Serial }}
+                                        <i class="fal fa-edit" style="margin-left: .25em"></i>
+                                    </td>
+                                    <td>
+                                        <div class="icon icon-primary icon-sm">
+                                            <span class="fas fa-burn"></span>
+                                        </div>
+                                    </td>
+                                </tr>
                             {{ end -}}
-                        {{ end -}}
-                    </div>
-                </div>
+                            </tbody>
+                        </table>
+                    {{ end -}}
+                {{ end -}}
             </div>
         </div>
     </div>
