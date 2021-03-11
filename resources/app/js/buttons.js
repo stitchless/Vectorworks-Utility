@@ -1,5 +1,5 @@
 let buttons = {
-    init: () => {
+    parseSerial: () => {
         // Edit Serial Button Elements
         const buttonElements = document.querySelectorAll('table td i.fal')
 

@@ -35,26 +35,26 @@ func GenerateTemplates(templateFS embed.FS) {
 
 // HandleMessages handles messages
 // Here as the middle mag between Javascript and Go
-// Json format strings come in
-// Json format strings go out in the form out payload
+// Json format strings come in and Json format strings
+// go out in the form of a payload.
 func HandleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (payload interface{}, err error) {
-	var s string
-	if len(m.Payload) > 0 && m.Name != "" {
-		// Confirm message json format
-		if err = json.Unmarshal(m.Payload, &s); err != nil {
-			payload = err.Error()
-			return
-		}
-	}
 	switch m.Name {
 	case "software":
 		// Software
-		if payload, err = software(s); err != nil {
+		if payload, err = software(); err != nil {
 			payload = err.Error()
 			return
 		}
 	case "editSerial":
-		if payload, err = editSerial(s); err != nil {
+		var softwareData []string
+		if len(m.Payload) > 0 && m.Name != "" {
+			// Confirm message json format
+			if err = json.Unmarshal(m.Payload, &softwareData); err != nil {
+				payload = err.Error()
+				return
+			}
+		}
+		if payload, err = editSerial(softwareData); err != nil {
 			payload = err.Error()
 			return
 		}
@@ -75,8 +75,7 @@ type htmlValues struct {
 	Softwares   []Software
 }
 
-func software(s string) (r render, err error) {
-	fmt.Println("SOFTWARE: " + s)
+func software() (r render, err error) {
 	templateValues := htmlValues{
 		Preloader:   false,
 		Title:       "Welcome to the Vectorworks Utility Tool",
@@ -94,8 +93,7 @@ func software(s string) (r render, err error) {
 	return
 }
 
-func editSerial(serial string) (r render, err error){
-	fmt.Println("TESTING: " + serial)
+func editSerial(serial []string) (r render, err error){
+	fmt.Println(serial)
 	return
-
 }

@@ -27,16 +27,15 @@ let index = {
             preload.hide()
             document.getElementById('content').innerHTML = message.payload.html_string
             // Add links to buttons
-            buttons.init()
+            buttons.parseSerial()
         });
     },
     editSerial: (softwarename, year) => {
         // Create our message
-        let message = {
-            "name": "editSerial",
-            "softwarename": softwarename,
-            "year": year
-        };
+        let message = {"name": "editSerial"};
+        if (typeof softwarename !== "undefined" && typeof year !== 'undefined') {
+            message.payload = [softwarename, year]
+        }
 
         astilectron.sendMessage(message, (message) => {
             // check for errors
