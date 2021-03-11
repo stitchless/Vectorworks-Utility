@@ -32,10 +32,18 @@
                                 <tr>
                                     <th scope="row">{{ inc $index }}</th>
                                     <td>{{ .Year }}</td>
-                                    <td>
+                                    <td class="mx-4">
+                                        <!-- Edit the Serial numbers -->
+                                        <div id="{{ $softwareName }}-{{ .Year }}-edit" class="input-group input-group-sm" data-display="edit">
+                                            <input type="text" class="form-control" placeholder="{{ .License.Serial }}" aria-label="Serial number with save and cancel">
+                                            <button class="btn btn-sm btn-outline-success" type="button"><span class="fal fa-check" data-software="{{ $softwareName }}" data-year="{{ .Year }}"></span></button>
+                                            <button class="btn btn-sm btn-outline-danger" type="button"><span class="fal fa-times"></span></button>
+                                        </div>
                                         <!-- Show the Serial number -->
-                                        {{ .License.Serial }}
-                                        <i class="fal fa-edit ms-1" data-software="{{ $softwareName }}" data-year="{{ .Year }}"></i>
+                                        <div hidden id="{{ $softwareName }}-{{ .Year }}-display" data-display="display">
+                                            {{ .License.Serial }}
+                                            <i class="fal fa-edit ms-1" data-software="{{ $softwareName }}" data-year="{{ .Year }}"></i>
+                                        </div>
                                     </td>
                                     <td>
                                         <div class="icon icon-primary icon-sm">
