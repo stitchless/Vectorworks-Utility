@@ -32,26 +32,35 @@ func GenerateTemplates(templateFS embed.FS) {
 	tmpl = template.Must(template.New("homepage.html.tmpl").Funcs(funcMap).ParseFS(templateFS, "**/*.html.tmpl"))
 }
 
-// HandleMessages handles messages
-func HandleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (payload interface{}, err error) {
-	switch m.Name {
-	case "software":
-		// Unmarshal payload
-		var s string
-		if len(m.Payload) > 0 {
-			// Unmarshal payload
-			if err = json.Unmarshal(m.Payload, &s); err != nil {
-				payload = err.Error()
-				return
-			}
-		}
 
-		// Software
-		if payload, err = software(); err != nil {
+// HandleMessages handles messages
+// Here as the middle mag between Javascript and Go
+// Json format strings come in
+// Json format strings go out in the form out payload
+func HandleMessages(_ *astilectron.Window, m bootstrap.MessageIn) (payload interface{}, err error) {
+	var s string
+	if len(m.Payload) > 0 && m.Name != "" {
+		// Confirm message json format
+		if err = json.Unmarshal(m.Payload, &s); err != nil {
 			payload = err.Error()
 			return
 		}
 	}
+	switch m.Name {
+	case "software":
+		// Software
+		if payload, err = software(s); err != nil {
+			payload = err.Error()
+			return
+		}
+	case "editSerial":
+		if payload, err = editSerial(s); err != nil {
+			payload = err.Error()
+			return
+		}
+	}
+
+
 	return
 }
 
@@ -64,17 +73,10 @@ type htmlValues struct {
 	Preloader   bool
 	Description string
 	Softwares   []Software
-	FormData    FormData
 }
 
-type FormData struct {
-	Name   string
-	Year   string
-	Serial string
-}
-
-func software() (r render, err error) {
-	fmt.Println("Entered Software.")
+func software(s string) (r render, err error) {
+	fmt.Println("SOFTWARE: " + s)
 	templateValues := htmlValues{
 		Preloader:   false,
 		Title:       "Welcome to the Vectorworks Utility Tool",
@@ -90,4 +92,10 @@ func software() (r render, err error) {
 	r.Html = tpl.String()
 	fmt.Println(tpl.String())
 	return
+}
+
+func editSerial(serial string) (r render, err error){
+	fmt.Println("TESTING: " + serial)
+	return
+
 }

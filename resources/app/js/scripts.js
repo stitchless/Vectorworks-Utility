@@ -1,4 +1,3 @@
-console.log("Script Loaded.")
 let index = {
     init: () => {
         // Initialize the Preloader
@@ -6,12 +5,11 @@ let index = {
 
         // Wait for astilectron to be ready
         document.addEventListener('astilectron-ready', function () {
-            // Listen
-            index.listen();
 
-            // Test homepage
+            // Show homepage
             index.software();
         })
+
     },
     software: () => {
         // Create our message
@@ -28,31 +26,26 @@ let index = {
             }
             preload.hide()
             document.getElementById('content').innerHTML = message.payload.html_string
+            // Add links to buttons
+            buttons.init()
         });
     },
-    listen: () => {
-        astilectron.onMessage(function (message) {
-            switch (message.name) {
-                case "about":
-                    return {payload: "payload"};
-                case "check.out.menu":
-                    console.log(message.payload);
-                    break;
-            }
-        });
-    },
-    editSerial: () => {
+    editSerial: (softwarename, year) => {
         // Create our message
-        let message = {"name": "editSerial"};
+        let message = {
+            "name": "editSerial",
+            "softwarename": softwarename,
+            "year": year
+        };
 
         astilectron.sendMessage(message, (message) => {
-
             // check for errors
             if (message.name === "error") {
                 console.log(message.payload);
                 return
             }
-            document.getElementById('content').innerHTML = message.payload.html_string
+            console.log(message.payload.html_string)
+            // document.getElementById('content').innerHTML = message.payload.html_string
         });
     }
 };

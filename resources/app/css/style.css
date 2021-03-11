@@ -2,3 +2,7 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+table:not(:last-child) {
+    margin-bottom: 4em;
+}

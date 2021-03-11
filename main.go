@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 
 	"github.com/asticode/go-astikit"
 	"github.com/asticode/go-astilectron"
@@ -31,7 +30,7 @@ var (
 var (
 	fs    = flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
 	debug = fs.Bool("d", false, "enables the debug mode")
-	w     *astilectron.Window
+	w *astilectron.Window
 )
 
 //go:embed templates/*
@@ -86,16 +85,6 @@ func main() {
 				{Role: astilectron.MenuItemRoleClose},
 			},
 		}},
-		OnWait: func(_ *astilectron.Astilectron, ws []*astilectron.Window, _ *astilectron.Menu, _ *astilectron.Tray, _ *astilectron.Menu) error {
-			w = ws[0]
-			go func() {
-				time.Sleep(5 * time.Second)
-				if err := bootstrap.SendMessage(w, "check.out.menu", "Don't forget to check out the menu!"); err != nil {
-					l.Println(fmt.Errorf("sending check.out.menu event failed: %w", err))
-				}
-			}()
-			return nil
-		},
 		RestoreAssets: RestoreAssets,
 		Windows: []*bootstrap.Window{{
 			Homepage:       "index.html",
@@ -107,7 +96,8 @@ func main() {
 				Width:           astikit.IntPtr(780),
 				Transparent:     astikit.BoolPtr(false),
 				Resizable:       astikit.BoolPtr(false),
-				Modal:           astikit.BoolPtr(true),
+				Frame:           astikit.BoolPtr(true),
+				AutoHideMenuBar: astikit.BoolPtr(true),
 				WebPreferences: &astilectron.WebPreferences{
 					DevTools: astikit.BoolPtr(true),
 				},

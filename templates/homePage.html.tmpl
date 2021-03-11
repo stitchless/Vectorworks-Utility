@@ -1,5 +1,5 @@
 {{ define "homePage" }}
-    <div class="card shadow-sm">
+    <div class="card">
         <div class="card-header border-bottom border-gray-300">
             <h2 class="h5 mb-0">Vectorworks Utility App</h2>
         </div>
@@ -29,13 +29,13 @@
                             {{/*<!-- Table Body -->*/}}
                             <tbody>
                             {{ range $index, $install := $installations -}}
-                                <tr id="{{ $softwareName }}-{{ inc $index }}">
+                                <tr>
                                     <th scope="row">{{ inc $index }}</th>
                                     <td>{{ .Year }}</td>
                                     <td>
                                         <!-- Show the Serial number -->
                                         {{ .License.Serial }}
-                                        <i class="fal fa-edit" style="margin-left: .25em"></i>
+                                        <i class="fal fa-edit ms-1" data-software="{{ $softwareName }}" data-year="{{ .Year }}"></i>
                                     </td>
                                     <td>
                                         <div class="icon icon-primary icon-sm">
