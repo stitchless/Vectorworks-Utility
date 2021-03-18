@@ -46,6 +46,21 @@
                                         </div>
                                     </td>
                                     <td>
+                                        <div class="btn-group">
+                                            <button id="dropdown-{{ $softwareName }}-{{ .Year }}" class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                Actions
+                                            </button>
+                                            <ul class="dropdown-menu" aria-labelledby="dropdown-{{ $softwareName }}-{{ .Year }}">
+                                                <li><a class="dropdown-item" href="#">Clear User Folder</a></li>
+                                                <li><hr class="dropdown-divider"></li>
+                                                <li>
+                                                    <div class="dropdown-item">Nuke</div>
+                                                    <div class="icon icon-primary icon-sm">
+                                                        <span class="fas fa-burn"></span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                         <div class="icon icon-primary icon-sm">
                                             <span class="fas fa-burn"></span>
                                         </div>
