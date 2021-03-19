@@ -8,7 +8,7 @@ const (
 )
 
 // All the softwares that the UI presents to the user.
-var allSoftwares = []Software{
+var AllSoftwares = []Software{
 	SoftwareVectorworks,
 	SoftwareVision,
 	SoftwareCloudServices,

@@ -10,7 +10,7 @@ import (
 func SearchForUpdate(currentVersion string) {
 	client := github.NewClient(nil)
 
-	release, _, err := client.Repositories.GetLatestRelease(context.Background(), "jpeizer", "vectorworks-app-cleaner")
+	release, _, err := client.Repositories.GetLatestRelease(context.Background(), "jpeizer", "Vectorworks-Utility")
 
 	if release != nil {
 		gitLatestReleaseConstraint, _ := semver.NewConstraint("> " + *release.TagName)
