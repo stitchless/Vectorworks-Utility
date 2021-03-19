@@ -14,3 +14,11 @@ func SoftwareLabels() []g.Widget {
 	}
 	return labels
 }
+
+func GetSoftwareNames() []string {
+	var softwareLabels []string
+	for key, _ := range software.InstallationsMap {
+		softwareLabels = append(softwareLabels, key)
+	}
+	return softwareLabels
+}

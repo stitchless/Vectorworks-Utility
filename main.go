@@ -14,10 +14,13 @@ func loop() {
 			gui.SoftwareLabels()...,
 		),
 		g.Line(
-			gui.InstallationEntries()...
-		),
-		g.Line(
-			g.Table("Fast table").FastMode(true).Rows(gui.BuildRows()...),
+			g.RangeBuilder("Installed Software", []interface{}{fmt.Sprintf("%#q", gui.GetSoftwareNames())}, func(i int, v interface{}) g.Widget {
+				str := v.(string)
+				return g.Layout{
+					g.Label(str),
+					g.Table("Fast table").FastMode(true).Rows(gui.BuildRows(str)...),
+				}
+			})...,
 		),
 		g.Line(
 			g.Button("Quit").OnClick(onQuit),

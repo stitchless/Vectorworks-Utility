@@ -6,16 +6,19 @@ import (
 )
 
 // TODO: Fix row to use input softwarename as input
-func BuildRows() []*g.RowWidget {
-	for _, Installations := range software.InstallationsMap {
-		rows := make([]*g.RowWidget, len(Installations))
-		for _, installation := range Installations {
-			rows[installation.ID] = g.Row(
-				g.Label(installation.Year),
-				g.Label(installation.License.Serial),
-			)
-		}
-		return rows
+func BuildRows(softwareName string) []*g.RowWidget {
+	rows := make([]*g.RowWidget, len(software.InstallationsMap[softwareName]))
+	for i, installation := range software.InstallationsMap[softwareName] {
+		rows[i] = g.Row(
+			g.Label(installation.Year),
+			g.Label(installation.License.Serial),
+		)
 	}
-	return nil
+	//for i, installation := range rows {
+	//	rows[i] = g.Row(
+	//		g.Label(installation),
+	//		g.Label(installation),
+	//	)
+	//}
+	return rows
 }
