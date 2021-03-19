@@ -1,5 +1,9 @@
 package main
 
+
+// Embed and Load fonts for the UI to use
+
+
 import (
 	_ "embed"
 	g "github.com/AllenDang/giu"
@@ -7,17 +11,20 @@ import (
 )
 
 var (
-	fontRoboto imgui.Font
-	//go:embed assets/fonts/DancingScript-Regular.ttf
-	dancingScript []byte
+	// Default Font
+	//go:embed assets/fonts/nunito-sans-v6-latin-regular.ttf
+	nunito []byte
+
+	// Addressable Fonts
+	FontRoboto imgui.Font
 	//go:embed assets/fonts/Roboto-Regular.ttf
 	roboto []byte
 )
 
+// LoadFont will load a default font then load addressable fonts that can be
+// called for individual elements.
 func LoadFont() {
-	// Load Fonts
 	fonts := g.Context.IO().Fonts()
-	fonts.AddFontFromMemoryTTF(dancingScript, 18)
-	//fonts.AddFontFromFileTTF("./assets/fonts/DancingScript-Regular.ttf", 18)
-	fontRoboto = fonts.AddFontFromMemoryTTF(roboto, 18)
+	fonts.AddFontFromMemoryTTF(nunito, 18)
+	FontRoboto = fonts.AddFontFromMemoryTTF(roboto, 18)
 }
