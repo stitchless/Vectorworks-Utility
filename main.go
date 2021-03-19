@@ -1,23 +1,24 @@
 package main
 
 import (
+	"fmt"
 	g "github.com/AllenDang/giu"
 	"github.com/jpeizer/Vectorworks-Utility/internal/gui"
+	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 	"os"
 )
 
 func loop() {
-	g.SingleWindowWithMenuBar("Vectorworks App Utility").Layout(
-		g.MenuBar().Layout(
-			g.Menu("File").Layout(
-				g.MenuItem("Save"),
-			),
-		),
+	g.SingleWindow("Vectorworks App Utility").Layout(
 		g.Group().Layout(
 			gui.SoftwareLabels()...,
 		),
-		g.Label("Vectorworks, Inc. Application Utility").Font(&fontRoboto),
-		g.Label("Hello world from giu"),
+		g.Line(
+			gui.InstallationEntries()...
+		),
+		g.Line(
+			g.Table("Fast table").FastMode(true).Rows(gui.BuildRows()...),
+		),
 		g.Line(
 			g.Button("Quit").OnClick(onQuit),
 		),
@@ -25,6 +26,10 @@ func loop() {
 }
 
 func main() {
+	err := software.PopulateInstallations()
+	if err != nil {
+		fmt.Println(err)
+	}
 	wnd := g.NewMasterWindow("Vectorworks App Utility", 800, 600, g.MasterWindowFlagsNotResizable, LoadFont)
 	wnd.Run(loop)
 }
