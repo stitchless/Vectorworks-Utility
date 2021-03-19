@@ -5,7 +5,7 @@ import (
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 )
 
-// TODO: Fix row to use input.
+// TODO: Fix row to use input softwarename as input
 func BuildRows() []*g.RowWidget {
 	for _, Installations := range software.InstallationsMap {
 		rows := make([]*g.RowWidget, len(Installations))
