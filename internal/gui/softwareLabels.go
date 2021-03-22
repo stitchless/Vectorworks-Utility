@@ -5,7 +5,9 @@ import (
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 )
 
-func SoftwareLabels() []g.Widget {
+type SoftwareLabels []string
+
+func getSoftwareWidgetLabels() []g.Widget {
 	var labels []g.Widget
 
 	for key, _ := range software.InstallationsMap {
@@ -15,10 +17,18 @@ func SoftwareLabels() []g.Widget {
 	return labels
 }
 
-func GetSoftwareNames() []string {
+func GetSoftwareNames() SoftwareLabels {
 	var softwareLabels []string
 	for key, _ := range software.InstallationsMap {
 		softwareLabels = append(softwareLabels, key)
 	}
 	return softwareLabels
+}
+
+func (ss SoftwareLabels) ToInterfaceSlice() []interface{} {
+	iface := make([]interface{}, len(ss))
+	for i := range ss {
+		iface[i] = ss[i]
+	}
+	return iface
 }

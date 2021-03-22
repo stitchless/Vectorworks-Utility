@@ -11,16 +11,15 @@ import (
 func loop() {
 	g.SingleWindow("Vectorworks App Utility").Layout(
 		g.Group().Layout(
-			gui.SoftwareLabels()...,
-		),
-		g.Line(
-			g.RangeBuilder("Installed Software", []interface{}{fmt.Sprintf("%#q", gui.GetSoftwareNames())}, func(i int, v interface{}) g.Widget {
-				str := v.(string)
-				return g.Layout{
-					g.Label(str),
-					g.Table("Fast table").FastMode(true).Rows(gui.BuildRows(str)...),
-				}
-			})...,
+			g.Line(
+				g.RangeBuilder("Installed Software", gui.GetSoftwareNames().ToInterfaceSlice(), func(i int, v interface{}) g.Widget {
+					str := v.(string)
+					return g.Layout{
+						g.Label(str),
+						g.Table("Fast table").FastMode(true).Rows(gui.BuildRows(str)...),
+					}
+				})...,
+			),
 		),
 		g.Line(
 			g.Button("Quit").OnClick(onQuit),
