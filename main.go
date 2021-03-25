@@ -30,7 +30,7 @@ func loop() {
 }
 
 func main() {
-	err := software.GenerateSoftwareMap()
+	err := software.GenerateInstalledSoftwareMap()
 	if err != nil {
 		fmt.Println(err)
 	}

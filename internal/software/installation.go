@@ -9,9 +9,12 @@ type Installation struct {
 	SoftwareLabel
 }
 
-var InstalledSoftwareMap = make(map[string][]Installation)
+var InstalledSoftwareMap = make(map[SoftwareLabel][]Installation)
 
-func GenerateSoftwareMap() error {
+// GenerateInstalledSoftwareMap creates a map
+// key: SoftwareLabel
+// Value: [] Installation
+func GenerateInstalledSoftwareMap() error {
 	for _, softwareName := range AllSoftwareOptions {
 		installations, err := FindInstallationsBySoftware(softwareName)
 		if err != nil {
@@ -24,6 +27,8 @@ func GenerateSoftwareMap() error {
 	return nil
 }
 
+// FindInstallationsBySoftware will take in a SoftwareLabel and build a slice of installs
+// Returns a [] Installation
 func FindInstallationsBySoftware(softwareLabel SoftwareLabel) ([]Installation, error) {
 	var installations []Installation
 	var i int
