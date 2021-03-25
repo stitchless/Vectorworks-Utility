@@ -7,7 +7,7 @@ import (
 
 func InstallationEntries() []g.Widget {
 	var widget []g.Widget
-	for _, Installations := range software.InstallationsMap {
+	for _, Installations := range software.InstalledSoftwareMap {
 		for _, installation := range Installations {
 			year := g.Label(installation.Year)
 			serial := g.Label(installation.License.Serial)

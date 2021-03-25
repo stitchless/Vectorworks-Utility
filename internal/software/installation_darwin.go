@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func FindInstallationYears(software Software) []string {
+func FindInstallationYears(softwareLabel SoftwareLabel) []string {
 	var years []string
 
 	// FIXME: new method to get plist, current limits the returned value
@@ -16,7 +16,7 @@ func FindInstallationYears(software Software) []string {
 
 	// returns all license year numbers found in plist file names from the files variable
 	for _, f := range files {
-		file := strings.Contains(f.Name(), strings.ToLower(software+".license."))
+		file := strings.Contains(f.Name(), strings.ToLower(softwareLabel+".license."))
 		if file {
 			year := regexp.MustCompile("[0-9]+").FindString(f.Name())
 			if year != "" {
@@ -29,7 +29,7 @@ func FindInstallationYears(software Software) []string {
 }
 
 func findProperties(installation Installation) []string {
-	switch installation.Software {
+	switch installation.SoftwareLabel {
 	case SoftwareVectorworks:
 		return []string{
 			"net.nemetschek.vectorworks.license." + installation.Year + ".plist",
@@ -54,8 +54,7 @@ func findProperties(installation Installation) []string {
 }
 
 func findDirectories(installation Installation) []string {
-
-	switch installation.Software {
+	switch installation.SoftwareLabel {
 	case SoftwareVectorworks:
 		return []string{
 			GetHomeDir() + "/Library/Application\\ Support/Vectorworks\\ RMCache/rm" + installation.Year,

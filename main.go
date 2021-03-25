@@ -8,11 +8,13 @@ import (
 	"os"
 )
 
+var softwares []interface{}
+
 func loop() {
 	g.SingleWindow("Vectorworks App Utility").Layout(
 		g.Group().Layout(
 			g.Line(
-				g.RangeBuilder("Installed Software", gui.GetSoftwareNames().ToInterfaceSlice(), func(i int, v interface{}) g.Widget {
+				g.RangeBuilder("Installed Software", softwares, func(i int, v interface{}) g.Widget {
 					str := v.(string)
 					return g.Layout{
 						g.Label(str),
@@ -28,10 +30,11 @@ func loop() {
 }
 
 func main() {
-	err := software.PopulateInstallations()
+	err := software.GenerateSoftwareMap()
 	if err != nil {
 		fmt.Println(err)
 	}
+	softwares = gui.GetSoftwareNames().ToInterfaceSlice()
 	wnd := g.NewMasterWindow("Vectorworks App Utility", 800, 600, g.MasterWindowFlagsNotResizable, LoadFont)
 	wnd.Run(loop)
 }

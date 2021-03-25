@@ -3,39 +3,39 @@ package software
 type Installation struct {
 	ID          int
 	License     License
-	Software    Software
 	Properties  []string
 	Directories []string
 	Year        string
+	SoftwareLabel
 }
 
-var InstallationsMap = make(map[string][]Installation)
+var InstalledSoftwareMap = make(map[string][]Installation)
 
-func PopulateInstallations() error {
-	for _, softwareName := range AllSoftwares {
+func GenerateSoftwareMap() error {
+	for _, softwareName := range AllSoftwareOptions {
 		installations, err := FindInstallationsBySoftware(softwareName)
 		if err != nil {
 			return err
 		}
 		if len(installations) != 0 {
-			InstallationsMap[softwareName] = installations
+			InstalledSoftwareMap[softwareName] = installations
 		}
 	}
 	return nil
 }
 
-func FindInstallationsBySoftware(software Software) ([]Installation, error) {
+func FindInstallationsBySoftware(softwareLabel SoftwareLabel) ([]Installation, error) {
 	var installations []Installation
 	var i int
 
-	years := FindInstallationYears(software)
+	years := FindInstallationYears(softwareLabel)
 
 	// Attach configs, versions, and Vectorworks Utility years all into on object then return that object
 	for _, year := range years {
 		installation := Installation{
 			ID:       i,
-			Software: software,
 			Year:     year,
+			SoftwareLabel: softwareLabel,
 		}
 
 		installation.Properties = findProperties(installation)
