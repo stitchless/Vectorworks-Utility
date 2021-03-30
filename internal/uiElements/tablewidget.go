@@ -1,4 +1,4 @@
-package gui
+package uiElements
 
 import (
 	"fmt"

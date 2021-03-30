@@ -1,4 +1,4 @@
-package gui
+package uiElements
 
 import (
 	g "github.com/AllenDang/giu"
