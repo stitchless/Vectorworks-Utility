@@ -9,12 +9,12 @@ import (
 	"regexp"
 )
 
-func FindInstallationYears(software Software) []string {
+func FindInstallationYears(softwareLabel SoftwareLabel) []string {
 	var appdataFolder string
 	var years []string
 
 	// Different software has different locations
-	switch software {
+	switch softwareLabel {
 	case SoftwareVectorworks:
 		appdataFolder = os.Getenv("APPDATA") + "/Nemetschek/Vectorworks"
 	case SoftwareVision:
@@ -39,7 +39,7 @@ func findProperties(installation Installation) []string {
 	// define system variables
 	version := convertYearToVersion(installation.Year)
 
-	switch installation.Software {
+	switch installation.SoftwareLabel {
 	case SoftwareVectorworks:
 		return []string{
 			"SOFTWARE\\Nemetschek\\Vectorworks " + version,
@@ -61,16 +61,16 @@ func findDirectories(installation Installation) []string {
 	winAppData := os.Getenv("APPDATA") + "\\"
 	winLocalAppData := os.Getenv("LOCALAPPDATA") + "\\"
 
-	switch installation.Software {
+	switch installation.SoftwareLabel {
 	case SoftwareVectorworks:
 		return []string{
-			winAppData + installation.Software + "\\" + installation.Year,
-			winAppData + installation.Software + " " + installation.Year + " Installer",
-			winAppData + installation.Software + " " + installation.Year + " Updater",
-			winAppData + "Nemetschek\\" + installation.Software + "\\" + installation.Year,
-			winAppData + "Nemetschek\\" + installation.Software + "\\accounts",
-			winAppData + "Nemetschek\\" + installation.Software + " RMCache\\rm" + installation.Year,
-			winAppData + "Nemetschek\\" + installation.Software + " Web Cache",
+			winAppData + installation.SoftwareLabel + "\\" + installation.Year,
+			winAppData + installation.SoftwareLabel + " " + installation.Year + " Installer",
+			winAppData + installation.SoftwareLabel + " " + installation.Year + " Updater",
+			winAppData + "Nemetschek\\" + installation.SoftwareLabel + "\\" + installation.Year,
+			winAppData + "Nemetschek\\" + installation.SoftwareLabel + "\\accounts",
+			winAppData + "Nemetschek\\" + installation.SoftwareLabel + " RMCache\\rm" + installation.Year,
+			winAppData + "Nemetschek\\" + installation.SoftwareLabel + " Web Cache",
 			winAppData + "vectorworks-installer",
 			winAppData + "vectorworks-updater",
 			winAppData + "vectorworks-updater-updater",
@@ -79,7 +79,7 @@ func findDirectories(installation Installation) []string {
 		}
 	case SoftwareVision:
 		return []string{
-			filepath.Join(winAppData, installation.Software, installation.Year),
+			filepath.Join(winAppData, installation.SoftwareLabel, installation.Year),
 			filepath.Join(winLocalAppData, "VisionUpdater"),
 		}
 	case SoftwareCloudServices:
