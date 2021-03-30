@@ -3,7 +3,7 @@ module github.com/jpeizer/Vectorworks-Utility
 go 1.16
 
 require (
-	github.com/AllenDang/giu v0.5.3
+	github.com/AllenDang/giu v0.5.4-0.20210324140344-fc79c4cfc791
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/go-gl/gl v0.0.0-20210315015930-ae072cafe09d // indirect
 	github.com/go-resty/resty/v2 v2.5.0 // indirect
