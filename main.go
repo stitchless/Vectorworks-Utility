@@ -11,38 +11,34 @@ import (
 
 var softwares []interface{}
 
+const (
+	windowW int = 600
+	windowH int = 800
+)
+
+var showDemoWindow = false
+
 func loop() {
 	g.SingleWindow("Vectorworks App Utility").Layout(
-		g.Custom(func() {
-			imgui.Text("Aligned")
-			imgui.SameLineV(150, -1)
-			imgui.Text("Testing")
-			imgui.SameLineV(300, -1)
-			imgui.Text("Vision")
-		}),
 		g.Line(
-			g.Button("Vectorworks").Size(150, 34).OnClick(func(){
-				fmt.Println("Vectorworks Clicked")
-			}),
-			g.Button("Vision").Size(150, 34).OnClick(func(){
-				fmt.Println("Vision Clicked")
+			g.Custom(func() {
+				var posX float32 = 150
+				for softwareLabel, _ := range software.InstalledSoftwareMap {
+					imgui.SameLineV(posX, -1)
+					g.Button(softwareLabel).Size(150, 34).OnClick(func(){
+						fmt.Println(softwareLabel)
+					}).Build()
+				}
 			}),
 		),
-		//g.Group().Layout(
-		//	g.Line(
-		//		g.RangeBuilder("Installed Software", softwares, func(i int, v interface{}) g.Widget {
-		//			str := v.(string)
-		//			return g.Layout{
-		//				g.Label(str),
-		//				g.Table("Fast table").FastMode(true).Rows(gui.BuildRows(str)...),
-		//			}
-		//		})...,
-		//	),
-		//),
-		//g.Line(
-		//	g.Button("Quit").OnClick(onQuit),
-		//),
+		g.Line(
+			g.Button("Quit").OnClick(onQuit),
+		),
 	)
+
+	if showDemoWindow {
+		imgui.ShowDemoWindow(&showDemoWindow)
+	}
 }
 
 func main() {
@@ -51,7 +47,7 @@ func main() {
 		fmt.Println(err)
 	}
 	softwares = gui.GetSoftwareNames().ToInterfaceSlice()
-	wnd := g.NewMasterWindow("Vectorworks App Utility", 800, 600, g.MasterWindowFlagsNotResizable, LoadFont)
+	wnd := g.NewMasterWindow("Vectorworks App Utility", windowH, windowW, g.MasterWindowFlagsNotResizable, LoadFont)
 	wnd.Run(loop)
 }
 

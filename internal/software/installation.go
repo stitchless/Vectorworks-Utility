@@ -6,16 +6,16 @@ type Installation struct {
 	Properties  []string
 	Directories []string
 	Year        string
-	SoftwareLabel
+	SoftwareName
 }
 
-var InstalledSoftwareMap = make(map[SoftwareLabel][]Installation)
+var InstalledSoftwareMap = make(map[SoftwareName][]Installation)
 
 // GenerateInstalledSoftwareMap creates a map
-// key: SoftwareLabel
+// key: SoftwareName
 // Value: [] Installation
 func GenerateInstalledSoftwareMap() error {
-	for _, softwareName := range AllSoftwareOptions {
+	for _, softwareName := range AllActiveSoftwareNames {
 		installations, err := FindInstallationsBySoftware(softwareName)
 		if err != nil {
 			return err
@@ -27,9 +27,9 @@ func GenerateInstalledSoftwareMap() error {
 	return nil
 }
 
-// FindInstallationsBySoftware will take in a SoftwareLabel and build a slice of installs
+// FindInstallationsBySoftware will take in a SoftwareName and build a slice of installs
 // Returns a [] Installation
-func FindInstallationsBySoftware(softwareLabel SoftwareLabel) ([]Installation, error) {
+func FindInstallationsBySoftware(softwareLabel SoftwareName) ([]Installation, error) {
 	var installations []Installation
 	var i int
 
@@ -38,9 +38,9 @@ func FindInstallationsBySoftware(softwareLabel SoftwareLabel) ([]Installation, e
 	// Attach configs, versions, and Vectorworks Utility years all into on object then return that object
 	for _, year := range years {
 		installation := Installation{
-			ID:       i,
-			Year:     year,
-			SoftwareLabel: softwareLabel,
+			ID:           i,
+			Year:         year,
+			SoftwareName: softwareLabel,
 		}
 
 		installation.Properties = findProperties(installation)

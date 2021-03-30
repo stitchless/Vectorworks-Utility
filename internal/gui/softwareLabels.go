@@ -1,6 +1,7 @@
 package gui
 
 import (
+	g "github.com/AllenDang/giu"
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 )
 
@@ -10,7 +11,7 @@ type SoftwareLabels []string
 //	var labels []g.Widget
 //
 //	for key, _ := range software.InstalledSoftwareMap {
-//		label := g.Label(key)
+//		label := g.Name(key)
 //		labels = append(labels, label)
 //	}
 //	return labels
@@ -30,4 +31,14 @@ func (softwareLabel SoftwareLabels) ToInterfaceSlice() []interface{} {
 		widgetInterface[i] = softwareLabel[i]
 	}
 	return widgetInterface
+}
+
+func GetSoftwareButtons() []g.Widget {
+	var buttons []g.Widget
+
+	for key, _ := range software.InstalledSoftwareMap {
+		label := g.Label(key)
+		buttons = append(buttons, label)
+	}
+	return buttons
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 )
 
-func BuildRows(softwareLabel software.SoftwareLabel) []*g.RowWidget {
+func BuildRows(softwareLabel software.SoftwareName) []*g.RowWidget {
 	rows := make([]*g.RowWidget, len(software.InstalledSoftwareMap[softwareLabel]))
 	for i, installation := range software.InstalledSoftwareMap[softwareLabel] {
 		rows[i] = g.Row(

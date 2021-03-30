@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func FindInstallationYears(softwareLabel SoftwareLabel) []string {
+func FindInstallationYears(softwareLabel SoftwareName) []string {
 	var years []string
 
 	// FIXME: new method to get plist, current limits the returned value
@@ -29,7 +29,7 @@ func FindInstallationYears(softwareLabel SoftwareLabel) []string {
 }
 
 func findProperties(installation Installation) []string {
-	switch installation.SoftwareLabel {
+	switch installation.SoftwareName {
 	case SoftwareVectorworks:
 		return []string{
 			"net.nemetschek.vectorworks.license." + installation.Year + ".plist",
@@ -54,7 +54,7 @@ func findProperties(installation Installation) []string {
 }
 
 func findDirectories(installation Installation) []string {
-	switch installation.SoftwareLabel {
+	switch installation.SoftwareName {
 	case SoftwareVectorworks:
 		return []string{
 			GetHomeDir() + "/Library/Application\\ Support/Vectorworks\\ RMCache/rm" + installation.Year,

@@ -1,23 +1,23 @@
 package software
 
-type SoftwareLabel = string
+type SoftwareName = string
 
 // Software holds the software name, and all the installations for that software package
 type Software struct {
-	Label         SoftwareLabel
+	Name          SoftwareName
 	Installations []Installation
 }
 
-// Define some constants for use with out application
+// Define some constants for use with our application
 const (
-	SoftwareVectorworks   SoftwareLabel = "Vectorworks"
-	SoftwareVision        SoftwareLabel = "Vision"
-	SoftwareCloudServices SoftwareLabel = "VCS"
+	SoftwareVectorworks   SoftwareName = "Vectorworks"
+	SoftwareVision        SoftwareName = "Vision"
+	SoftwareCloudServices SoftwareName = "VCS"
 )
 
-// AllSoftwareOptions provides an easy means to add, remove, enable, and disable software options
+// AllActiveSoftwareNames provides an easy means to add, remove, enable, and disable software options
 // to be used by the overall package
-var AllSoftwareOptions = []SoftwareLabel{
+var AllActiveSoftwareNames = []SoftwareName{
 	SoftwareVectorworks,
 	SoftwareVision,
 	SoftwareCloudServices,

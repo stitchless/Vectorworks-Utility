@@ -17,7 +17,7 @@ func getSerial(installation Installation) string {
 		_ = key.Close()
 	}()
 
-	switch installation.SoftwareLabel {
+	switch installation.SoftwareName {
 	case SoftwareVectorworks:
 		serial, _, _ := key.GetStringValue("User Serial Number")
 		return serial
@@ -47,7 +47,7 @@ func convertYearToVersion(appYear string) string {
 func getSerialLocation(installation Installation) string {
 	version := convertYearToVersion(installation.Year)
 
-	switch installation.SoftwareLabel {
+	switch installation.SoftwareName {
 	case SoftwareVectorworks:
 		return "SOFTWARE\\Nemetschek\\Vectorworks " + version + "\\Registration"
 	case SoftwareVision:
