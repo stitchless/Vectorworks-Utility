@@ -12,27 +12,47 @@ import (
 var softwares []interface{}
 
 const (
-	windowW int = 600
-	windowH int = 800
+	windowW int = 800
+	windowH int = 600
+	softwareBtnWidth float32 = 150
+	softwareBtnHeight float32 = 34
+	softwareBtnPadding float32 = 10
 )
 
 var showDemoWindow = false
+
+type uiState struct {
+	demoView	bool
+	activeSoftwareTab string
+}
+
+func softwareBtnPosX() float32 {
+	var numOfButtons = float32(len(software.InstalledSoftwareMap))
+	var totalGroupWidth = ((softwareBtnWidth * numOfButtons) + (softwareBtnPadding * numOfButtons)) - softwareBtnPadding
+	var posX = (float32(windowW) / 2) - (totalGroupWidth / 2)
+	return posX
+}
 
 func loop() {
 	g.SingleWindow("Vectorworks App Utility").Layout(
 		g.Line(
 			g.Custom(func() {
-				var posX float32 = 150
-				for softwareLabel, _ := range software.InstalledSoftwareMap {
-					imgui.SameLineV(posX, -1)
-					g.Button(softwareLabel).Size(150, 34).OnClick(func(){
-						fmt.Println(softwareLabel)
-					}).Build()
+				for i, softwareName := range software.AllActiveSoftwareNames {
+					if _, ok := software.InstalledSoftwareMap[softwareName]; ok {
+						if i > 0 {
+							imgui.SameLineV(softwareBtnPosX(), -1)
+						} else {
+							imgui.SameLineV(softwareBtnPosX() +softwareBtnPadding + softwareBtnWidth, -1)
+						}
+						g.Button(softwareName).Size(softwareBtnWidth, softwareBtnHeight).OnClick(func(){
+							fmt.Println(softwareName)
+							showDemoWindow = true
+						}).Build()
+					}
 				}
+				imgui.SameLineV(float32(windowW) - softwareBtnHeight - float32(10), -1)
+				g.Button("X").Size(softwareBtnHeight, softwareBtnHeight).OnClick(onQuit).Build()
 			}),
-		),
-		g.Line(
-			g.Button("Quit").OnClick(onQuit),
 		),
 	)
 
@@ -47,7 +67,13 @@ func main() {
 		fmt.Println(err)
 	}
 	softwares = gui.GetSoftwareNames().ToInterfaceSlice()
-	wnd := g.NewMasterWindow("Vectorworks App Utility", windowH, windowW, g.MasterWindowFlagsNotResizable, LoadFont)
+	wnd := g.NewMasterWindow(
+		"Vectorworks App Utility",
+		windowW,
+		windowH,
+		g.MasterWindowFlagsNotResizable,
+		LoadFont,
+	)
 	wnd.Run(loop)
 }
 

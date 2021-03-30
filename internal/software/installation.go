@@ -2,11 +2,11 @@ package software
 
 type Installation struct {
 	ID          int
+	SoftwareName
+	Year        string
 	License     License
 	Properties  []string
 	Directories []string
-	Year        string
-	SoftwareName
 }
 
 var InstalledSoftwareMap = make(map[SoftwareName][]Installation)
