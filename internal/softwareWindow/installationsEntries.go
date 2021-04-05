@@ -1,4 +1,4 @@
-package uiElements
+package softwareWindow
 
 import (
 	g "github.com/AllenDang/giu"

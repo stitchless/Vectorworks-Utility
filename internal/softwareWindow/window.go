@@ -1,15 +1,10 @@
-package uiElements
+package softwareWindow
 
 import (
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/giu/imgui"
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 	"os"
-)
-
-const (
-	WindowW int = 800
-	WindowH int = 600
 )
 
 // softwareBtnPosX will calculate the middle of the window minus half the UI elements drawn to the line
@@ -68,32 +63,8 @@ func RenderActiveSoftwareTab() g.Widget {
 			}),
 		)
 	}
-	return nil
 }
 
-// Quit
 func onQuit() {
 	os.Exit(0)
 }
-
-//type installations []software.Installation
-
-//func (installations installations) toInterfaceSlice() []interface{} {
-//	widgetInterface := make([]interface{}, len(installations))
-//	for i := range installations {
-//		widgetInterface[i] = installations[i]
-//	}
-//	return widgetInterface
-//}
-
-
-// NAVIGATE MAP
-//func getSoftwareWidgetLabels() []g.Widget {
-//	var labels []g.Widget
-//
-//	for key, _ := range software.InstalledSoftwareMap {
-//		label := g.Name(key)
-//		labels = append(labels, label)
-//	}
-//	return labels
-//}

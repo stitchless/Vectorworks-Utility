@@ -5,39 +5,41 @@ import (
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/giu/imgui"
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
-	"github.com/jpeizer/Vectorworks-Utility/internal/uiElements"
+	"github.com/jpeizer/Vectorworks-Utility/internal/softwareWindow"
 )
 
 func loop() {
 	g.SingleWindow("Vectorworks App Utility").Layout(
 		g.Line(
 			// Shows installed Software packages as buttons along with close button on the right
-			uiElements.RenderActiveSoftwareButtons(),
+			softwareWindow.RenderActiveSoftwareButtons(),
 		),
 		g.Separator(),
 		g.Line(
 			g.Group().Layout(
-				uiElements.RenderActiveSoftwareTab(),
+				softwareWindow.RenderActiveSoftwareTab(),
 			),
 		),
 	)
 
-	if uiElements.ShowDemoWindow {
-		imgui.ShowDemoWindow(&uiElements.ShowDemoWindow)
+	if softwareWindow.ShowDemoWindow {
+		imgui.ShowDemoWindow(&softwareWindow.ShowDemoWindow)
 	}
+
+	// Update window width for layout calculations
+	var test = int(imgui.WindowWidth())
+	fmt.Println(test)
 }
 
 func main() {
 	err := software.GenerateInstalledSoftwareMap()
-	if err != nil {
-		fmt.Println(err)
-	}
-	//softwares = uiElements.GetSoftwareNames().ToInterfaceSlice()
+	software.Check(err)
+
 	wnd := g.NewMasterWindow(
 		"Vectorworks App Utility",
-		uiElements.WindowW,
-		uiElements.WindowH,
-		g.MasterWindowFlagsNotResizable,
+		softwareWindow.WindowW,
+		softwareWindow.WindowH,
+		g.MasterWindowFlagsTransparent,
 		LoadFont,
 	)
 	wnd.Run(loop)
