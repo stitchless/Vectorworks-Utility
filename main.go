@@ -1,12 +1,13 @@
 package main
 
 import (
-	"fmt"
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/giu/imgui"
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 	"github.com/jpeizer/Vectorworks-Utility/internal/softwareWindow"
 )
+
+var wnd *g.MasterWindow
 
 func loop() {
 	g.SingleWindow("Vectorworks App Utility").Layout(
@@ -26,19 +27,17 @@ func loop() {
 		imgui.ShowDemoWindow(&softwareWindow.ShowDemoWindow)
 	}
 
-	// Update window width for layout calculations
-	var test = int(imgui.WindowWidth())
-	fmt.Println(test)
+	softwareWindow.WindowSize.Width, _ = wnd.GetSize()
 }
 
 func main() {
 	err := software.GenerateInstalledSoftwareMap()
 	software.Check(err)
 
-	wnd := g.NewMasterWindow(
+	wnd = g.NewMasterWindow(
 		"Vectorworks App Utility",
-		softwareWindow.WindowW,
-		softwareWindow.WindowH,
+		softwareWindow.WindowSize.Height,
+		softwareWindow.WindowSize.Height,
 		0,
 		LoadFont,
 	)

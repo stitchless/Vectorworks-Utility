@@ -6,7 +6,14 @@ const (
 	SoftwareBtnPadding float32 = 10
 )
 
-var WindowH = 600
-var WindowW = 800
+type WindowDimentions struct {
+	Width int
+	Height int
+}
+
+var WindowSize = WindowDimentions{800, 600}
+
 var ShowDemoWindow = false
 var ActiveSoftwareTab string
+
+

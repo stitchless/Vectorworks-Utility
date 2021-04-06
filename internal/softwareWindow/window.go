@@ -1,6 +1,7 @@
 package softwareWindow
 
 import (
+	"fmt"
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/giu/imgui"
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
@@ -11,7 +12,7 @@ import (
 func softwareBtnPosX() float32 {
 	var numOfButtons = float32(len(software.InstalledSoftwareMap))
 	var totalGroupWidth = ((SoftwareBtnWidth * numOfButtons) + (SoftwareBtnPadding * numOfButtons)) - SoftwareBtnPadding
-	var posX = (float32(WindowW) / 2) - (totalGroupWidth / 2)
+	var posX = (float32(WindowSize.Width) / 2) - (totalGroupWidth / 2)
 	return posX
 }
 
@@ -33,7 +34,7 @@ func RenderActiveSoftwareButtons() g.Widget {
 				}).Build()
 			}
 		}
-		imgui.SameLineV(float32(WindowW)-SoftwareBtnHeight-float32(10), -1)
+		imgui.SameLineV(float32(WindowSize.Width)-SoftwareBtnHeight-float32(10), -1)
 		g.Button("X").Size(SoftwareBtnHeight, SoftwareBtnHeight).OnClick(onQuit).Build()
 	})
 }
@@ -44,22 +45,26 @@ func RenderActiveSoftwareTab() g.Widget {
 		return g.Line(
 			g.Custom(func() {
 				installations, _ := software.FindInstallationsBySoftware(software.SoftwareVectorworks)
-				for _, install := range installations {
-					g.Label(install.Year).Build()
-					imgui.SameLineV(0, 20)
-					g.Label(install.License.Serial).Build()
-				}
+				fmt.Println("Default...")
+				g.Table("Test").FastMode(true).Rows(RenderInstallations(installations)...).Build()
+				//for _, install := range installations {
+				//	g.Label(install.Year).Build()
+				//	imgui.SameLineV(0, 20)
+				//	g.Label(install.License.Serial).Build()
+				//}
 			}),
 		)
 	} else {
 		return g.Line(
 			g.Custom(func() {
 				installations, _ := software.FindInstallationsBySoftware(ActiveSoftwareTab)
-				for _, install := range installations {
-					g.Label(install.Year).Build()
-					imgui.SameLineV(0, 20)
-					g.Label(install.License.Serial).Build()
-				}
+				fmt.Println("Normal Function")
+				g.Table("Test").FastMode(true).Rows(RenderInstallations(installations)...)
+				//for _, install := range installations {
+				//	g.Label(install.Year).Build()
+				//	imgui.SameLineV(0, 20)
+				//	g.Label(install.License.Serial).Build()
+				//}
 			}),
 		)
 	}
