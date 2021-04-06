@@ -46,7 +46,8 @@ func RenderActiveSoftwareTab() g.Widget {
 			g.Custom(func() {
 				installations, _ := software.FindInstallationsBySoftware(software.SoftwareVectorworks)
 				fmt.Println("Default...")
-				g.Table("Test").FastMode(true).Rows(RenderInstallations(installations)...).Build()
+				RenderInstallations(installations).Build()
+				//g.Table("Test").Rows(RenderInstallations(installations)...).Size(500, 400).Build()
 				//for _, install := range installations {
 				//	g.Label(install.Year).Build()
 				//	imgui.SameLineV(0, 20)
@@ -59,7 +60,8 @@ func RenderActiveSoftwareTab() g.Widget {
 			g.Custom(func() {
 				installations, _ := software.FindInstallationsBySoftware(ActiveSoftwareTab)
 				fmt.Println("Normal Function")
-				g.Table("Test").FastMode(true).Rows(RenderInstallations(installations)...)
+				RenderInstallations(installations)
+				//g.Table("Test").FastMode(true).Rows(RenderInstallations(installations)...)
 				//for _, install := range installations {
 				//	g.Label(install.Year).Build()
 				//	imgui.SameLineV(0, 20)

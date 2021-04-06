@@ -18,6 +18,7 @@ func loop() {
 		g.Separator(),
 		g.Line(
 			g.Group().Layout(
+				// Display All installations for selected software
 				softwareWindow.RenderActiveSoftwareTab(),
 			),
 		),
