@@ -17,9 +17,7 @@ var InstalledSoftwareMap = make(map[SoftwareName][]Installation)
 func GenerateInstalledSoftwareMap() error {
 	for _, softwareName := range AllActiveSoftwareNames {
 		installations, err := FindInstallationsBySoftware(softwareName)
-		if err != nil {
-			return err
-		}
+		Check(err)
 		if len(installations) != 0 {
 			InstalledSoftwareMap[softwareName] = installations
 		}

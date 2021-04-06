@@ -1,6 +1,7 @@
 package software
 
 type SoftwareName = string
+var HomeDirectory = GetHomeDirectory()
 
 // Software holds the software name, and all the installations for that software package
 type Software struct {

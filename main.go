@@ -39,7 +39,7 @@ func main() {
 		"Vectorworks App Utility",
 		softwareWindow.WindowW,
 		softwareWindow.WindowH,
-		g.MasterWindowFlagsTransparent,
+		0,
 		LoadFont,
 	)
 	wnd.Run(loop)

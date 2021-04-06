@@ -1,7 +1,6 @@
 package software
 
 import (
-	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
@@ -10,8 +9,7 @@ import (
 func FindInstallationYears(softwareLabel SoftwareName) []string {
 	var years []string
 
-	// FIXME: new method to get plist, current limits the returned value
-	files, err := ioutil.ReadDir(GetHomeDir() + "/Library/Preferences") // gets list of all plist file names
+	files, err := os.ReadDir(HomeDirectory + "/Library/Preferences") // gets list of all plist file names
 	Check(err)
 
 	// returns all license year numbers found in plist file names from the files variable
@@ -57,15 +55,15 @@ func findDirectories(installation Installation) []string {
 	switch installation.SoftwareName {
 	case SoftwareVectorworks:
 		return []string{
-			GetHomeDir() + "/Library/Application\\ Support/Vectorworks\\ RMCache/rm" + installation.Year,
-			GetHomeDir() + "/Library/Application\\ Support/Vectorworks\\ Cloud\\ Services",
-			GetHomeDir() + "/Library/Application\\ Support/Vectorworks/" + installation.Year,
-			GetHomeDir() + "/Library/Application\\ Support/vectorworks-installer-wrapper",
+			HomeDirectory + "/Library/Application\\ Support/Vectorworks\\ RMCache/rm" + installation.Year,
+			HomeDirectory + "/Library/Application\\ Support/Vectorworks\\ Cloud\\ Services",
+			HomeDirectory + "/Library/Application\\ Support/Vectorworks/" + installation.Year,
+			HomeDirectory + "/Library/Application\\ Support/vectorworks-installer-wrapper",
 		}
 	case SoftwareVision:
 		return []string{
-			GetHomeDir() + "/Library/Application\\ Support/Vision/" + installation.Year,
-			GetHomeDir() + "/Library/Application\\ Support/VisionUpdater",
+			HomeDirectory + "/Library/Application\\ Support/Vision/" + installation.Year,
+			HomeDirectory + "/Library/Application\\ Support/VisionUpdater",
 			"/Library/Frameworks/QtConcurrent.framework",
 			"/Library/Frameworks/QtCore.framework",
 			"/Library/Frameworks/QtDBus.framework",
@@ -92,7 +90,7 @@ func findDirectories(installation Installation) []string {
 }
 
 func (i Installation) Clean() {
-	plistPath := GetHomeDir() + "/Library/Preferences/"
+	plistPath := HomeDirectory + "/Library/Preferences/"
 	// Deletes relevant plist files for select software/version
 	for _, plist := range i.Properties {
 		_ = os.RemoveAll(plistPath + plist)

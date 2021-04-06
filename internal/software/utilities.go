@@ -6,30 +6,17 @@ import (
 )
 
 // Error Checking
-func Check(e error) {
-	if e != nil {
-		panic(e)
+func Check(err error) {
+	if err != nil {
+		panic(err)
 	}
 }
 
 // Define users home directory
-func GetWD() string {
-	var err error
-	var dir string
-	dir, err = os.Getwd()
+func GetHomeDirectory() string {
+	home, err := os.UserHomeDir()
 	if err != nil {
 		log.Fatal(err)
 	}
-	return dir
-}
-
-// Define users home directory
-func GetHomeDir() string {
-	var err error
-	var dir string
-	dir, err = os.UserHomeDir()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return dir
+	return home
 }

@@ -19,9 +19,9 @@ type LicenseOpts struct {
 func GetSerialLocation(installation Installation) string {
 	switch installation.SoftwareName {
 	case SoftwareVectorworks:
-		return GetHomeDir() + "/Library/Preferences/net.nemetschek.vectorworks.license." + installation.Year + ".plist"
+		return HomeDirectory + "/Library/Preferences/net.nemetschek.vectorworks.license." + installation.Year + ".plist"
 	case SoftwareVision:
-		return GetHomeDir() + "/Library/Preferences/net.vectorworks.vision.license." + installation.Year + ".plist"
+		return HomeDirectory + "/Library/Preferences/net.vectorworks.vision.license." + installation.Year + ".plist"
 	}
 
 	return ""
