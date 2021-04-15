@@ -15,7 +15,7 @@ var (
 	//go:embed assets/fonts/nunito-sans-v6-latin-regular.ttf
 	nunito []byte
 
-	// Addressable Fonts
+	// FontRoboto Addressable Fonts
 	FontRoboto imgui.Font
 	//go:embed assets/fonts/Roboto-Regular.ttf
 	roboto []byte
