@@ -1,9 +1,9 @@
 package software
 
 const (
-	SoftwareBtnWidth   float32 = 150
-	SoftwareBtnHeight  float32 = 34
-	SoftwareBtnPadding float32 = 10
+	BtnWidth   float32 = 150
+	BtnHeight  float32 = 34
+	BtnPadding float32 = 10
 )
 
 type WindowDimensions struct {

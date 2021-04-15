@@ -10,7 +10,7 @@ import (
 // softwareBtnPosX will calculate the middle of the window minus half the UI elements drawn to the line
 func softwareBtnPosX() float32 {
 	var numOfButtons = float32(len(InstalledSoftwareMap))
-	var totalGroupWidth = ((SoftwareBtnWidth * numOfButtons) + (SoftwareBtnPadding * numOfButtons)) - SoftwareBtnPadding
+	var totalGroupWidth = ((BtnWidth * numOfButtons) + (BtnPadding * numOfButtons)) - BtnPadding
 	var posX = (float32(WindowSize.Width) / 2) - (totalGroupWidth / 2)
 	return posX
 }
@@ -18,7 +18,7 @@ func softwareBtnPosX() float32 {
 // RenderActiveSoftwareButtons will generate the UI needed to display all found software installations
 func RenderActiveSoftwareButtons() g.Widget {
 	return g.Custom(func() {
-		g.Button("Demo").Size(80, SoftwareBtnHeight).OnClick(func() {
+		g.Button("Demo").Size(80, BtnHeight).OnClick(func() {
 			ShowDemoWindow = true
 		}).Build()
 		for i, softwareName := range AllActiveSoftwareNames {
@@ -26,15 +26,15 @@ func RenderActiveSoftwareButtons() g.Widget {
 				if i == 0 {
 					imgui.SameLineV(softwareBtnPosX(), 0)
 				} else {
-					imgui.SameLineV(softwareBtnPosX()+SoftwareBtnWidth+SoftwareBtnPadding, 0)
+					imgui.SameLineV(softwareBtnPosX()+BtnWidth+BtnPadding, 0)
 				}
-				g.Button(softwareName).Size(SoftwareBtnWidth, SoftwareBtnHeight).OnClick(func() {
+				g.Button(softwareName).Size(BtnWidth, BtnHeight).OnClick(func() {
 					ActiveSoftwareTab = softwareName
 				}).Build()
 			}
 		}
-		imgui.SameLineV(float32(WindowSize.Width)-SoftwareBtnHeight-float32(10), -1)
-		g.Button("X").Size(SoftwareBtnHeight, SoftwareBtnHeight).OnClick(onQuit).Build()
+		imgui.SameLineV(float32(WindowSize.Width)-BtnHeight-float32(10), -1)
+		g.Button("X").Size(BtnHeight, BtnHeight).OnClick(onQuit).Build()
 	})
 }
 

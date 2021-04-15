@@ -96,9 +96,8 @@ func findDirectories(installation Installation) []string {
 func (i Installation) Clean() {
 	fmt.Println("Hello")
 	for _, property := range i.Properties {
-		k, _ := registry.OpenKey(registry.CURRENT_USER, property, registry.ALL_ACCESS)
-
-		defer k.Close()
+		k, err := registry.OpenKey(registry.CURRENT_USER, property, registry.ALL_ACCESS)
+		Check(err)
 
 		names, _ := k.ReadSubKeyNames(-1)
 
@@ -106,6 +105,12 @@ func (i Installation) Clean() {
 			_ = registry.DeleteKey(k, name)
 		}
 		_ = registry.DeleteKey(k, "")
+
+		func(k registry.Key) {
+			err := k.Close()
+				if err != nil {
+			}
+		}(k)
 	}
 	// TODO: Check for directory after as a way to verify deletion.
 
