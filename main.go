@@ -4,6 +4,7 @@ import (
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/giu/imgui"
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
+	"github.com/jpeizer/Vectorworks-Utility/internal/window"
 )
 
 var wnd *g.MasterWindow
@@ -12,22 +13,23 @@ func loop() {
 	g.SingleWindow("Vectorworks App Utility").Layout(
 		g.Line(
 			// Shows installed Software packages as buttons along with close button on the right
-			software.RenderActiveSoftwareButtons(),
+			window.RenderActiveSoftwareButtons(),
+			window.ShowInstalledSoftware(window.ActiveSoftwareTab),
 		),
 		g.Separator(),
 		g.Line(
 			g.Group().Layout(
 				// Display All installations for selected software
-				software.RenderActiveSoftwareTab(),
+				window.RenderActiveSoftwareTab(),
 			),
 		),
 	)
 
-	if software.ShowDemoWindow {
-		imgui.ShowDemoWindow(&software.ShowDemoWindow)
+	if window.ShowDemoWindow {
+		imgui.ShowDemoWindow(&window.ShowDemoWindow)
 	}
 
-	software.WindowSize.Width, _ = wnd.GetSize()
+	window.WindowSize.Width, _ = wnd.GetSize()
 }
 
 func main() {
@@ -36,8 +38,8 @@ func main() {
 
 	wnd = g.NewMasterWindow(
 		"Vectorworks App Utility",
-		software.WindowSize.Height,
-		software.WindowSize.Height,
+		window.WindowSize.Height,
+		window.WindowSize.Height,
 		0,
 		LoadFont,
 	)

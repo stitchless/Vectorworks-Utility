@@ -1,4 +1,4 @@
-package software
+package window
 
 const (
 	BtnWidth   float32 = 150
