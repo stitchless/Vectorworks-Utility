@@ -22,7 +22,6 @@ func loop() {
 			//window.RenderActiveSoftwareButtons(),
 		),
 	)
-
 	window.WindowSize.Width, window.WindowSize.Height = wnd.GetSize()
 }
 

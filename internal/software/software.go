@@ -35,7 +35,7 @@ const (
 // slice of FeatureName
 var AllActiveFeatures = []FeatureName{
 	FeatureTraceApplication,
-	FeatureEditSerial,
+	//FeatureEditSerial,
 	FeatureDemoWindow,
 }
 

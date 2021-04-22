@@ -1,10 +1,10 @@
 package window
 
+import "C"
 import (
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/giu/imgui"
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
-	"math"
 )
 
 // TODO: create new line
@@ -13,23 +13,19 @@ import (
 
 // RenderTopMenuBar CheckForActiveFeatures gets all active features and returns a slice of software.FeatureName
 func RenderTopMenuBar() g.Widget {
-	// Button Padding
-	const buttonPadding = 20
-	numberOfSpaces := len(software.AllActiveFeatures) - 1
 	numberOfButtons := len(software.AllActiveFeatures)
-	buttonWidth := float32((WindowSize.Width - buttonPadding * numberOfSpaces) / numberOfButtons)
 	return g.Custom(func() {
-		for i, feature := range software.AllActiveFeatures {
-			// Find the x position of the next button
-			posX := (buttonWidth * float32(i) + buttonPadding * float32(i)) - (float32(math.Pow(float64(i), float64(numberOfButtons))))
-			if i == 0 {
-				imgui.SameLineV(0, 0)
-			} else {
-				imgui.SameLineV(posX, -1)
-			}
-			g.Button(feature).Size(buttonWidth, 30).OnClick(func() {
+		// ID = (16)ImGuiStyleVar_CellPadding on X value
+		imgui.PushStyleVarVec2(16, imgui.Vec2{X: 8, Y: 0})
+		imgui.BeginTable("TopMenuBar", numberOfButtons, 0, imgui.Vec2{X: -1, Y: 30}, 0)
+		imgui.TableNextRow(0, 30)
+		for _, feature := range software.AllActiveFeatures {
+			imgui.TableNextColumn()
+			g.Button(feature).Size(-1, 30).OnClick(func() {
 				RunModule(feature)
 			}).Build()
 		}
+		imgui.EndTable()
+		imgui.PopStyleVar()
 	})
 }
