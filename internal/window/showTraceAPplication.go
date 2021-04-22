@@ -2,6 +2,7 @@ package window
 
 import (
 	"bytes"
+	"fmt"
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/giu/imgui"
 	"github.com/sqweek/dialog"
@@ -37,11 +38,16 @@ func RenderTraceApplication() g.Widget {
 }
 
 func runApplication(TargetFile string) {
+	// buffer to stream
+	var stdBuffer bytes.Buffer
+
+	// FS Path to run and capture IO
 	command := exec.Command(TargetFile)
 
-	var stdBuffer bytes.Buffer
+	// MultiWriter creates a writer that captures the stdout of the target application
 	mw := io.MultiWriter(os.Stdout, &stdBuffer)
 
+	// The various outputs to assign to the writer
 	command.Stdout = mw
 	command.Stderr = mw
 
@@ -52,4 +58,16 @@ func runApplication(TargetFile string) {
 
 	// Stream the log output
 	stdOutPut = stdBuffer
+
+}
+
+func Testing() {
+	done := make(chan bool)
+	quit := make(chan os.Signal, 1)
+
+	go func() {
+		<-quit
+		fmt.Println("This is a test...")
+	}()
+	close(done)
 }

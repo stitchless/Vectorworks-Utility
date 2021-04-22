@@ -5,6 +5,8 @@ import (
 	"github.com/AllenDang/giu/imgui"
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 	"github.com/jpeizer/Vectorworks-Utility/internal/window"
+	"log"
+	"os"
 )
 
 var wnd *g.MasterWindow
@@ -34,6 +36,10 @@ func loop() {
 }
 
 func main() {
+	logger := log.New(os.Stdout, "Trace: ", log.LstdFlags)
+	logger.Println("Testing;")
+	window.Testing()
+
 	err := software.GenerateInstalledSoftwareMap()
 	software.Check(err)
 
