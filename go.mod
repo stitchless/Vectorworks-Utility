@@ -7,6 +7,7 @@ require (
 	github.com/go-gl/gl v0.0.0-20210315015930-ae072cafe09d // indirect
 	github.com/go-gl/glfw/v3.3/glfw v0.0.0-20210410170116-ea3d685f79fb // indirect
 	github.com/go-resty/resty/v2 v2.6.0 // indirect
+	github.com/sqweek/dialog v0.0.0-20200911184034-8a3d98e8211d // indirect
 	golang.org/x/net v0.0.0-20210415231046-e915ea6b2b7d // indirect
 	golang.org/x/sys v0.0.0-20210419170143-37df388d1f33
 	howett.net/plist v0.0.0-20201203080718-1454fab16a06

@@ -5,7 +5,7 @@ import (
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 )
 
-// Find method for default view, Then follow click events
+// RenderActiveSoftwareTab Find method for default view, Then follow click events
 func RenderActiveSoftwareTab() g.Widget {
 	if installations, ok := software.InstalledSoftwareMap[ActiveSoftwareTab]; ok {
 		// Show the active software
@@ -24,3 +24,4 @@ func RenderActiveSoftwareTab() g.Widget {
 		)
 	}
 }
+

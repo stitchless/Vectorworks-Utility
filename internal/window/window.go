@@ -6,12 +6,14 @@ const (
 	BtnPadding float32 = 10
 )
 
-type WindowDimensions struct {
+type windowDimensions struct {
 	Width int
 	Height int
 }
 
-var WindowSize = WindowDimensions{800, 600}
+
+var WindowSize = windowDimensions{800, 600}
 
 var ShowDemoWindow = false
+var ShowTraceApplication = false
 var ActiveSoftwareTab string

@@ -20,3 +20,11 @@ func GetHomeDirectory() string {
 	}
 	return home
 }
+
+func GetConfigDirectory() (string, error) {
+	config, err := os.UserConfigDir()
+	if err != nil {
+		return "", err
+	}
+	return config, nil
+}

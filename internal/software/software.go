@@ -1,23 +1,43 @@
 package software
 
-type SoftwareName = string
+// HomeDirectory : Home Directory based on the running operating system.
 var HomeDirectory = GetHomeDirectory()
 
-// Software holds the software name, and all the installations for that software package
+// Software is all information that makes up a tracked piece of software
+// Name provides the SoftwareName
+// Installations is a slice of Installation
 type Software struct {
 	Name          SoftwareName
 	Installations []Installation
 }
 
-// Define some constants for use with our application
+// FeatureName illustrates all feature types
+type FeatureName = string
+// SoftwareName illustrates all Software Names
+type SoftwareName = string
+
+// All possible application features
+const (
+	FeatureTraceApplication FeatureName = "Trace Application"
+	FeatureEditSerial       FeatureName = "Edit Serial"
+)
+
+// All possible SoftwareName (s)
 const (
 	SoftwareVectorworks   SoftwareName = "Vectorworks"
 	SoftwareVision        SoftwareName = "Vision"
 	SoftwareCloudServices SoftwareName = "VCS"
 )
 
-// AllActiveSoftwareNames provides an easy means to add, remove, enable, and disable software options
-// to be used by the overall package
+// AllActiveFeatures is used to turn on and off application features
+// slice of FeatureName
+var AllActiveFeatures = []FeatureName{
+	FeatureTraceApplication,
+	FeatureEditSerial,
+}
+
+// AllActiveSoftwareNames is used to turn on and off software to track
+// slice of SoftwareName
 var AllActiveSoftwareNames = []SoftwareName{
 	SoftwareVectorworks,
 	SoftwareVision,

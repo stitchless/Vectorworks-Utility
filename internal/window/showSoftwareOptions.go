@@ -13,6 +13,7 @@ func RenderActiveSoftwareButtons() g.Widget {
 		g.Button("Demo").Size(80, BtnHeight).OnClick(func() {
 			ShowDemoWindow = true
 		}).Build()
+
 		// Render Found installed software buttons.
 		for i, softwareName := range software.AllActiveSoftwareNames {
 			if _, ok := software.InstalledSoftwareMap[softwareName]; ok {
@@ -23,12 +24,14 @@ func RenderActiveSoftwareButtons() g.Widget {
 					// Offset from previous location
 					imgui.SameLineV(softwareBtnPosX()+BtnWidth+BtnPadding, 0)
 				}
+
 				// Show buttons from all found installed software
 				g.Button(softwareName).Size(BtnWidth, BtnHeight).OnClick(func() {
 					ActiveSoftwareTab = softwareName
 				}).Build()
 			}
 		}
+
 		// Show the exit button (X) on the right side.
 		imgui.SameLineV(float32(WindowSize.Width)-BtnHeight-float32(10), -1)
 		g.Button("X").Size(BtnHeight, BtnHeight).OnClick(onQuit).Build()

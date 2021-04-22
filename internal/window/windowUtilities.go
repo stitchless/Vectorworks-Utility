@@ -1,7 +1,6 @@
 package window
 
 import (
-	"fmt"
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/giu/imgui"
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
@@ -31,9 +30,6 @@ func RenderInstallations(installations []software.Installation) g.Widget {
 			// Serial Column
 			imgui.TableNextColumn()
 			imgui.Text(installation.License.Serial)
-			g.Button("test").OnClick(func() {
-				fmt.Println("Button Pressed")
-			})
 		}
 		imgui.EndTable()
 		//rows[0].BgColor(&(color.RGBA{R: 200, G: 100, B: 100, A: 255}))

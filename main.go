@@ -12,21 +12,22 @@ var wnd *g.MasterWindow
 func loop() {
 	g.SingleWindow("Vectorworks App Utility").Layout(
 		g.Line(
-			// Shows installed Software packages as buttons along with close button on the right
-			window.RenderActiveSoftwareButtons(),
-			window.ShowInstalledSoftware(window.ActiveSoftwareTab),
+			window.RenderTopMenuBar(),
 		),
 		g.Separator(),
 		g.Line(
-			g.Group().Layout(
-				// Display All installations for selected software
-				window.RenderActiveSoftwareTab(),
-			),
+			window.RenderTraceApplication(),
+			// TODO: Fill this area with conditional content
+			//window.RenderActiveSoftwareButtons(),
 		),
 	)
 
 	if window.ShowDemoWindow {
 		imgui.ShowDemoWindow(&window.ShowDemoWindow)
+	}
+
+	if window.ShowTraceApplication {
+		window.RenderTraceApplication()
 	}
 
 	window.WindowSize.Width, _ = wnd.GetSize()
