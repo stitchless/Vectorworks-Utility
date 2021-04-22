@@ -1,109 +1,54 @@
 package main
 
 import (
-	"embed"
-	"encoding/json"
-	"flag"
-	"fmt"
+	g "github.com/AllenDang/giu"
+	"github.com/AllenDang/giu/imgui"
+	"github.com/jpeizer/Vectorworks-Utility/internal/software"
+	"github.com/jpeizer/Vectorworks-Utility/internal/window"
 	"log"
 	"os"
-
-	"github.com/asticode/go-astikit"
-	"github.com/asticode/go-astilectron"
-	bootstrap "github.com/asticode/go-astilectron-bootstrap"
-	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 )
 
-// Constants
-const htmlAbout = `Welcome on <b>Astilectron</b> demo!<br>
-	This is using the bootstrap and the bundler.`
+var wnd *g.MasterWindow
 
-// Vars injected via ldflags by bundler
-var (
-	AppName            string
-	BuiltAt            string
-	VersionAstilectron string
-	VersionElectron    string
-)
+func loop() {
+	g.SingleWindow("Vectorworks App Utility").Layout(
+		g.Line(
+			window.RenderTopMenuBar(),
+		),
+		g.Separator(),
+		g.Line(
+			window.RenderTraceApplication(),
+			// TODO: Fill this area with conditional content
+			//window.RenderActiveSoftwareButtons(),
+		),
+	)
 
-// Application Vars
-var (
-	fs    = flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
-	debug = fs.Bool("d", false, "enables the debug mode")
-	w *astilectron.Window
-)
+	if window.ShowDemoWindow {
+		imgui.ShowDemoWindow(&window.ShowDemoWindow)
+	}
 
-//go:embed templates/*
-var templateFS embed.FS
+	if window.ShowTraceApplication {
+		window.RenderTraceApplication()
+	}
 
-func init() {
-	software.GenerateTemplates(templateFS)
+	window.WindowSize.Width, window.WindowSize.Height = wnd.GetSize()
 }
 
 func main() {
-	// Create logger
-	l := log.New(log.Writer(), log.Prefix(), log.Flags())
+	logger := log.New(os.Stdout, "Trace: ", log.LstdFlags)
+	logger.Println("Testing;")
+	window.Testing()
 
-	// Parse flags
-	_ = fs.Parse(os.Args[1:])
+	err := software.GenerateInstalledSoftwareMap()
+	software.Check(err)
 
-	// Run bootstrap
-	l.Printf("Running app built at %s\n", BuiltAt)
-	if err := bootstrap.Run(bootstrap.Options{
-		Asset:    Asset,
-		AssetDir: AssetDir,
-		AstilectronOptions: astilectron.Options{
-			AppName:            AppName,
-			AppIconDarwinPath:  "resources/icon.icns",
-			AppIconDefaultPath: "resources/icon.png",
-			SingleInstance:     true,
-			VersionAstilectron: VersionAstilectron,
-			VersionElectron:    VersionElectron,
-		},
-		Debug:  *debug,
-		Logger: l,
-		MenuOptions: []*astilectron.MenuItemOptions{{
-			Label: astikit.StrPtr("File"),
-			SubMenu: []*astilectron.MenuItemOptions{
-				{
-					Label: astikit.StrPtr("About"),
-					OnClick: func(e astilectron.Event) (deleteListener bool) {
-						if err := bootstrap.SendMessage(w, "about", htmlAbout, func(m *bootstrap.MessageIn) {
-							// Unmarshal payload
-							var s string
-							if err := json.Unmarshal(m.Payload, &s); err != nil {
-								l.Println(fmt.Errorf("unmarshaling payload failed: %w", err))
-								return
-							}
-							l.Printf("About modal has been displayed and payload is %s!\n", s)
-						}); err != nil {
-							l.Println(fmt.Errorf("sending about event failed: %w", err))
-						}
-						return
-					},
-				},
-				{Role: astilectron.MenuItemRoleClose},
-			},
-		}},
-		RestoreAssets: RestoreAssets,
-		Windows: []*bootstrap.Window{{
-			Homepage:       "index.html",
-			MessageHandler: software.HandleMessages,
-			Options: &astilectron.WindowOptions{
-				BackgroundColor: astikit.StrPtr("#333"),
-				Center:          astikit.BoolPtr(true),
-				Height:          astikit.IntPtr(600),
-				Width:           astikit.IntPtr(780),
-				Transparent:     astikit.BoolPtr(false),
-				Resizable:       astikit.BoolPtr(false),
-				Frame:           astikit.BoolPtr(true),
-				AutoHideMenuBar: astikit.BoolPtr(true),
-				WebPreferences: &astilectron.WebPreferences{
-					DevTools: astikit.BoolPtr(true),
-				},
-			},
-		}},
-	}); err != nil {
-		l.Fatal(fmt.Errorf("running bootstrap failed: %w", err))
-	}
+	wnd = g.NewMasterWindow(
+		"Vectorworks App Utility",
+		window.WindowSize.Height,
+		window.WindowSize.Height,
+		0,
+		LoadFont,
+	)
+	wnd.Run(loop)
 }

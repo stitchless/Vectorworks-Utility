@@ -1,24 +1,44 @@
 package software
 
 type Installation struct {
-	ID			int
+	ID          int
+	SoftwareName
+	Year        string
 	License     License
-	Software    Software
 	Properties  []string
 	Directories []string
-	Year        string
 }
 
-func FindInstallationsBySoftware(software Software) ([]Installation, error) {
-	var installations []Installation
+var InstalledSoftwareMap = make(map[SoftwareName][]Installation)
 
-	years := FindInstallationYears(software)
+// GenerateInstalledSoftwareMap creates a map
+// key: SoftwareName
+// Value: [] Installation
+func GenerateInstalledSoftwareMap() error {
+	for _, softwareName := range AllActiveSoftwareNames {
+		installations, err := FindInstallationsBySoftware(softwareName)
+		Check(err)
+		if len(installations) != 0 {
+			InstalledSoftwareMap[softwareName] = installations
+		}
+	}
+	return nil
+}
+
+// FindInstallationsBySoftware will take in a SoftwareName and build a slice of installs
+// Returns a [] Installation
+func FindInstallationsBySoftware(softwareLabel SoftwareName) ([]Installation, error) {
+	var installations []Installation
+	var i int
+
+	years := FindInstallationYears(softwareLabel)
 
 	// Attach configs, versions, and Vectorworks Utility years all into on object then return that object
 	for _, year := range years {
 		installation := Installation{
-			Software:    software,
-			Year:        year,
+			ID:           i,
+			Year:         year,
+			SoftwareName: softwareLabel,
 		}
 
 		installation.Properties = findProperties(installation)
@@ -28,6 +48,7 @@ func FindInstallationsBySoftware(software Software) ([]Installation, error) {
 		}
 
 		installations = append(installations, installation)
+		i += 1
 	}
 
 	return installations, nil

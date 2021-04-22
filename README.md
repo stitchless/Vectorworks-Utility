@@ -10,3 +10,5 @@ go install github.com/asticode/go-astilectron-bundler/astilectron-bundler
 astilectron-bundler
 ```
 
+Build arguments:
+-ldflags="-H windowsgui"

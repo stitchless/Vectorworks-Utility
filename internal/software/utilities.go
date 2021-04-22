@@ -5,31 +5,26 @@ import (
 	"os"
 )
 
-// Error Checking
-func Check(e error) {
-	if e != nil {
-		panic(e)
+// Check Error Checking
+func Check(err error) {
+	if err != nil {
+		panic(err)
 	}
 }
 
-// Define users home directory
-func GetWD() string {
-	var err error
-	var dir string
-	dir, err = os.Getwd()
+// GetHomeDirectory Define users home directory
+func GetHomeDirectory() string {
+	home, err := os.UserHomeDir()
 	if err != nil {
 		log.Fatal(err)
 	}
-	return dir
+	return home
 }
 
-// Define users home directory
-func GetHomeDir() string {
-	var err error
-	var dir string
-	dir, err = os.UserHomeDir()
+func GetConfigDirectory() (string, error) {
+	config, err := os.UserConfigDir()
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
-	return dir
+	return config, nil
 }

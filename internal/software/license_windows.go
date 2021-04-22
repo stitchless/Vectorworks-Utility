@@ -17,7 +17,7 @@ func getSerial(installation Installation) string {
 		_ = key.Close()
 	}()
 
-	switch installation.Software {
+	switch installation.SoftwareName {
 	case SoftwareVectorworks:
 		serial, _, _ := key.GetStringValue("User Serial Number")
 		return serial
@@ -47,7 +47,7 @@ func convertYearToVersion(appYear string) string {
 func getSerialLocation(installation Installation) string {
 	version := convertYearToVersion(installation.Year)
 
-	switch installation.Software {
+	switch installation.SoftwareName {
 	case SoftwareVectorworks:
 		return "SOFTWARE\\Nemetschek\\Vectorworks " + version + "\\Registration"
 	case SoftwareVision:
@@ -57,26 +57,26 @@ func getSerialLocation(installation Installation) string {
 	return ""
 }
 
-func replaceOldSerial(installation Installation, newSerial string) {
-	serialLocation := getSerialLocation(installation)
-
-	key, err := registry.OpenKey(registry.CURRENT_USER, serialLocation, registry.SET_VALUE)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	defer func() {
-		err = key.Close()
-		if err != nil {
-			log.Fatal(err)
-		}
-	}()
-
-	err = key.SetStringValue("User Serial Number", newSerial)
-	if err != nil {
-		log.Fatal(err)
-	}
-}
+//func replaceOldSerial(installation Installation, newSerial string) {
+//	serialLocation := getSerialLocation(installation)
+//
+//	key, err := registry.OpenKey(registry.CURRENT_USER, serialLocation, registry.SET_VALUE)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//
+//	defer func() {
+//		err = key.Close()
+//		if err != nil {
+//			log.Fatal(err)
+//		}
+//	}()
+//
+//	err = key.SetStringValue("User Serial Number", newSerial)
+//	if err != nil {
+//		log.Fatal(err)
+//	}
+//}
 
 //func cleanSerial(serial string) string {
 //	// TODO: Clear empty space (Done)
