@@ -2,11 +2,8 @@ package main
 
 import (
 	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/giu/imgui"
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 	"github.com/jpeizer/Vectorworks-Utility/internal/window"
-	"log"
-	"os"
 )
 
 var wnd *g.MasterWindow
@@ -19,27 +16,17 @@ func loop() {
 		g.Separator(),
 		g.Line(
 			window.RenderTraceApplication(),
+			window.RenderEditSerial(),
+			window.RenderDemoWindow(),
 			// TODO: Fill this area with conditional content
 			//window.RenderActiveSoftwareButtons(),
 		),
 	)
 
-	if window.ShowDemoWindow {
-		imgui.ShowDemoWindow(&window.ShowDemoWindow)
-	}
-
-	if window.ShowTraceApplication {
-		window.RenderTraceApplication()
-	}
-
 	window.WindowSize.Width, window.WindowSize.Height = wnd.GetSize()
 }
 
 func main() {
-	logger := log.New(os.Stdout, "Trace: ", log.LstdFlags)
-	logger.Println("Testing;")
-	window.Testing()
-
 	err := software.GenerateInstalledSoftwareMap()
 	software.Check(err)
 

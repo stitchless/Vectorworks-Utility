@@ -7,5 +7,11 @@ func RunModule(feature software.FeatureName) {
 	case software.FeatureTraceApplication:
 		ShowTraceApplication = !ShowTraceApplication
 		RenderTraceApplication()
+	case software.FeatureEditSerial:
+		ShowEditSerial = !ShowEditSerial
+		RenderEditSerial()
+	case software.FeatureDemoWindow:
+		ShowDemoWindow = !ShowDemoWindow
+		RenderDemoWindow()
 	}
 }

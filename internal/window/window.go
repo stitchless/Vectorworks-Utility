@@ -11,9 +11,15 @@ type windowDimensions struct {
 	Height int
 }
 
-
+// WindowSize dictates the master windows initial window size
+// vec2{int, int}
 var WindowSize = windowDimensions{800, 600}
 
-var ShowDemoWindow = false
-var ShowTraceApplication = false
 var ActiveSoftwareTab string
+
+// Toggles all features during application run
+var (
+	ShowTraceApplication = false
+	ShowEditSerial = false
+	ShowDemoWindow = false
+)

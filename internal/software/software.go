@@ -13,6 +13,7 @@ type Software struct {
 
 // FeatureName illustrates all feature types
 type FeatureName = string
+
 // SoftwareName illustrates all Software Names
 type SoftwareName = string
 
@@ -20,6 +21,7 @@ type SoftwareName = string
 const (
 	FeatureTraceApplication FeatureName = "Trace Application"
 	FeatureEditSerial       FeatureName = "Edit Serial"
+	FeatureDemoWindow       FeatureName = "Demo Window"
 )
 
 // All possible SoftwareName (s)
@@ -34,6 +36,7 @@ const (
 var AllActiveFeatures = []FeatureName{
 	FeatureTraceApplication,
 	FeatureEditSerial,
+	FeatureDemoWindow,
 }
 
 // AllActiveSoftwareNames is used to turn on and off software to track
