@@ -30,7 +30,7 @@ func loop() {
 		window.RenderTraceApplication()
 	}
 
-	window.WindowSize.Width, _ = wnd.GetSize()
+	window.WindowSize.Width, window.WindowSize.Height = wnd.GetSize()
 }
 
 func main() {

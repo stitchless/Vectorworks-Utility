@@ -11,37 +11,45 @@ import (
 	"os/exec"
 )
 
+var stdOutPut bytes.Buffer
+
 func RenderTraceApplication() g.Widget {
 	return g.Custom(func() {
 		if ShowTraceApplication {
 			var TargetFile string
-			var stdOutPut bytes.Buffer
 			g.Line(
 				g.Button("Load File...").Size(-1, 30).OnClick(func() {
-					TargetFile, _ = dialog.File().Filter("Application: .exe, .app", "exe", "app").Filter("All Files:  .*", "*").Load()
-
-					command := exec.Command(TargetFile)
-
-					var stdBuffer bytes.Buffer
-					mw := io.MultiWriter(os.Stdout, &stdBuffer)
-
-					command.Stdout = mw
-					command.Stderr = mw
-
-					// Run the binary and stream the output.
-					if err := command.Run(); err != nil {
-						log.Panicln(err)
+					var err error
+					TargetFile, err = dialog.File().Filter("Application: .exe, .app", "exe", "app").Filter("All Files:  .*", "*").Load()
+					if err != nil {
+						log.Println(err)
+					} else {
+						go runApplication(TargetFile)
 					}
-
-					// Stream the log output to the terminal window
-					stdOutPut = stdBuffer
 				}),
 			).Build()
-			if TargetFile != "" {
-				imgui.BeginChildV("TraceApplication", imgui.Vec2{X: float32(WindowSize.Width), Y: 400}, true, 0)
-				imgui.Text(stdOutPut.String())
-				imgui.EndChild()
-			}
+			imgui.BeginChildV("TraceApplication", imgui.Vec2{X: float32(WindowSize.Width), Y: float32(WindowSize.Height-120)}, true, 0)
+			imgui.Text(stdOutPut.String())
+			imgui.EndChild()
+			imgui.Button("Submit")
 		}
 	})
+}
+
+func runApplication(TargetFile string) {
+	command := exec.Command(TargetFile)
+
+	var stdBuffer bytes.Buffer
+	mw := io.MultiWriter(os.Stdout, &stdBuffer)
+
+	command.Stdout = mw
+	command.Stderr = mw
+
+	// Run the binary and stream the output.
+	if err := command.Run(); err != nil {
+		log.Panicln(err)
+	}
+
+	// Stream the log output
+	stdOutPut = stdBuffer
 }
