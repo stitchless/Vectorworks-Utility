@@ -1,14 +1,14 @@
 package window
 
 import (
-	"bufio"
 	"bytes"
+	"fmt"
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/giu/imgui"
+	"github.com/go-cmd/cmd"
 	"github.com/sqweek/dialog"
-	"io"
 	"log"
-	"os/exec"
+	"time"
 )
 
 var buffer bytes.Buffer
@@ -46,44 +46,51 @@ func RenderTraceApplication() g.Widget {
 }
 
 func runApplication(ch chan []byte, targetFile string) {
-	command := exec.Command(targetFile)
+	streamCmd := cmd.NewCmd(targetFile)
+	statusChan := streamCmd.Start()
 
-	outReader, outWriter := io.Pipe()
-	errReader, errWriter := io.Pipe()
-
-	command.Stdout = outWriter
-	command.Stderr = errWriter
-
-	// Is the transfer the output of the application, through the channel.
+	ticker := time.NewTimer(2 * time.Second)
 
 	go func() {
-		reader := bufio.NewReader(outReader)
-
-		for {
-			line, _, err := reader.ReadLine()
-			if err != nil {
-				break
-			}
-			ch <- line
-			ch <- []byte{'\n'}
+		for range ticker.C {
+			status := streamCmd.Status()
+			n := len(status.Stdout)
+			fmt.Println(status.Stdout[n])
 		}
 	}()
 
-	go func() {
-		reader := bufio.NewReader(errReader)
-
-		for {
-			line, _, err := reader.ReadLine()
-			if err != nil {
-				break
-			}
-			ch <- line
-			ch <- []byte{'\n'}
-		}
-	}()
-
-	if err := command.Run(); err != nil {
-		log.Panicln(err)
+	select {
+	case finalStatus := <-statusChan:
+		// done
+		fmt.Println(finalStatus)
+	default:
+		// no, still running
 	}
-}
+	finalStatus := <-statusChan
+	fmt.Println(finalStatus)
 
+	//cmd := exec.Command(targetFile)
+	//
+	////var stdBuffer bytes.Buffer
+	//stdoutPipe, _ := cmd.StdoutPipe()
+	//stderrPipe, _ := cmd.StderrPipe()
+	//multiReader := io.MultiReader(stdoutPipe, stderrPipe)
+	//
+	//go func() {
+	//	bufioReader := bufio.NewReader(multiReader)
+	//	for {
+	//		output, _, err := bufioReader.ReadLine()
+	//		var tempData []byte
+	//		tempData = output
+	//		if err != nil {
+	//			break
+	//		}
+	//		ch <- tempData
+	//		ch <- []byte{'\n'}
+	//	}
+	//}()
+	//
+	//if err := cmd.Run(); err != nil {
+	//	log.Panicln(err)
+	//}
+}
