@@ -18,3 +18,5 @@ var AllActiveFeatures = []FeatureName {
 }
 
 var currentFeature FeatureName
+
+var runonce bool

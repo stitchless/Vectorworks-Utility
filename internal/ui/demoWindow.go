@@ -1,7 +1,6 @@
 package ui
 
 import (
-	"fmt"
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/imgui-go"
 )
@@ -14,7 +13,6 @@ func RenderDemoWindow() g.Widget {
 			imgui.ShowDemoWindow(&open)
 			if !open {
 				currentFeature = "DemoWindowClosed"
-				fmt.Println("Entered")
 			}
 		}
 	})

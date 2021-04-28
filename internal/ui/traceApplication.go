@@ -58,6 +58,8 @@ func runApplication(ch chan []byte, targetFile string) {
 	//mw := io.MultiWriter(outWriter, errWriter, &buffer)
 	mr := io.MultiReader(outReader, errReader, &buffer)
 
+
+
 	// Is the transfer the output of the application, through the channel.
 
 	go func() {
