@@ -3,7 +3,7 @@ package software
 // HomeDirectory : Home Directory based on the running operating system.
 var HomeDirectory = GetHomeDirectory()
 
-// Software is all information that makes up a tracked piece of software
+// Software is all information that makes up a supported piece of software
 // Name provides the SoftwareName
 // Installations is a slice of Installation
 type Software struct {

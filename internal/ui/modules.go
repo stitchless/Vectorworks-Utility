@@ -1,22 +1,21 @@
 package ui
 
-// Controls all features found within the application.
+// featureName provides the user readable string for a supported software package
+type featureName string
 
-
-type FeatureName string
-
+// hard coded feature names that are possible for all implemented software packages
 const (
-	featureTraceApplication FeatureName = "Trace Application"
-	featureShowSerial       FeatureName = "Edit Serial"
-	featureDemoWindow       FeatureName = "Demo Window"
+	featureTraceApplication featureName = "Trace Application"
+	featureShowSerial       featureName = "Edit Serial"
+	featureDemoWindow       featureName = "Demo Window"
 )
 
-var AllActiveFeatures = []FeatureName {
+// AllActiveFeatures is a list of all the currently supported features the application supports
+var AllActiveFeatures = []featureName{
 	featureTraceApplication,
 	featureShowSerial,
 	featureDemoWindow,
 }
 
-var currentFeature FeatureName
-
-var runonce bool
+// currentFeature is used to control the flow of actively rendered features
+var currentFeature featureName
