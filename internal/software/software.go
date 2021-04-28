@@ -11,18 +11,8 @@ type Software struct {
 	Installations []Installation
 }
 
-// FeatureName illustrates all feature types
-type FeatureName = string
-
 // SoftwareName illustrates all Software Names
 type SoftwareName = string
-
-// All possible application features
-const (
-	FeatureTraceApplication FeatureName = "Trace Application"
-	FeatureEditSerial       FeatureName = "Edit Serial"
-	FeatureDemoWindow       FeatureName = "Demo Window"
-)
 
 // All possible SoftwareName (s)
 const (
@@ -30,14 +20,6 @@ const (
 	SoftwareVision        SoftwareName = "Vision"
 	SoftwareCloudServices SoftwareName = "VCS"
 )
-
-// AllActiveFeatures is used to turn on and off application features
-// slice of FeatureName
-var AllActiveFeatures = []FeatureName{
-	FeatureTraceApplication,
-	//FeatureEditSerial,
-	FeatureDemoWindow,
-}
 
 // AllActiveSoftwareNames is used to turn on and off software to track
 // slice of SoftwareName
