@@ -18,28 +18,12 @@ type plistOptions struct {
 
 func runApplication(ch chan []byte, targetFile string) {
 	var err error
-	var plistFile []byte
-	var plistData plistOptions
 
-
-	// Create Info.plist target string
-	plistFileString := filepath.Join(targetFile, "Contents", "Info.plist")
-	// Read in plist
-	plistFile, err = ioutil.ReadFile(plistFileString)
+	targetFile, err = getContentTargetFile(targetFile)
 	if err != nil {
-		fmt.Errorf("error reading plist file: %v", err)
+		err = fmt.Errorf("runApplicationError: %v", err)
+		panic(err)
 	}
-
-
-	plistReader := bytes.NewReader(plistFile)
-	// parse and return plist serial
-	decoder := plist.NewDecoder(plistReader)
-	//
-	err = decoder.Decode(&plistData.properties)
-
-	targetFile = filepath.Join(targetFile, "Contents", "MacOS", plistData.properties["CFBundleExecutable"].(string))
-	fmt.Println(targetFile)
-
 	cmd := exec.Command(targetFile)
 
 	outReader, outWriter := io.Pipe()
@@ -69,4 +53,29 @@ func runApplication(ch chan []byte, targetFile string) {
 	if err := cmd.Run(); err != nil {
 		log.Panicln(err)
 	}
+}
+
+func getContentTargetFile(targetPath string) (string, error) {
+	var plistData plistOptions
+
+	// Create Info.plist target string and read in the file
+	plistFileString := filepath.Join(targetPath, "Contents", "Info.plist")
+	plistFile, err := ioutil.ReadFile(plistFileString)
+	if err != nil {
+		return "", fmt.Errorf("error reading in info.plist file for selected application - %v", err)
+	}
+
+	// read and decode plist file
+	plistReader := bytes.NewReader(plistFile)
+	decoder := plist.NewDecoder(plistReader)
+	err = decoder.Decode(&plistData.properties)
+	if err != nil {
+		return "", fmt.Errorf("error decoding provided info.plist file - %v", err)
+	}
+
+	// get the target binary from the plist file and construct a real path to return
+	targetBinaryString := plistData.properties["CFBundleExecutable"].(string)
+	out := filepath.Join(targetPath, "Contents", "MacOS", targetBinaryString)
+
+	return out, nil
 }
