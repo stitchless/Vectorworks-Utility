@@ -9,7 +9,7 @@ type Installation struct {
 	Directories []string
 }
 
-var InstalledSoftwareMap = make(map[SoftwareName][]Installation)
+var AllInstalledSoftwareMap = make(map[SoftwareName][]Installation)
 
 // GenerateInstalledSoftwareMap creates a map
 // key: SoftwareName
@@ -21,7 +21,7 @@ func GenerateInstalledSoftwareMap() error {
 			return err
 		}
 		if len(installations) != 0 {
-			InstalledSoftwareMap[softwareName] = installations
+			AllInstalledSoftwareMap[softwareName] = installations
 		}
 	}
 	return nil
