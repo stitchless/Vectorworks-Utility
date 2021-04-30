@@ -1,28 +1,26 @@
 package ui
 
 import (
+	"bufio"
 	"bytes"
+	"fmt"
 	g "github.com/AllenDang/giu"
 	"github.com/AllenDang/imgui-go"
 	"github.com/sqweek/dialog"
 	"log"
+	"os"
+	"os/exec"
 )
 
 var buffer bytes.Buffer
-var ch chan []byte
+var done chan struct{}
 
 func init() {
-	ch = make(chan []byte)
+	//done = make(chan struct{})
 }
 
 func RenderTraceApplication() g.Widget {
 	return g.Custom(func() {
-		select {
-		case data := <-ch:
-			buffer.Write(data)
-		default:
-		}
-
 		if featureTraceApplication == currentFeature {
 			g.Line(
 				g.Button("Load File...").Size(-1, 30).OnClick(func() {
@@ -31,7 +29,8 @@ func RenderTraceApplication() g.Widget {
 					if err != nil {
 						log.Println(err)
 					} else {
-						go runApplication(ch, targetFile)
+						targetFile = confirmTargetFile(targetFile)
+						go runApplication(targetFile)
 					}
 				}),
 			).Build()
@@ -41,4 +40,36 @@ func RenderTraceApplication() g.Widget {
 			imgui.Button("Submit")
 		}
 	})
+}
+
+func runApplication(targetFile string) {
+	// TODO: Check if application is still running
+	// TODO: Close channel if application is no longer found
+	cmd := exec.Command(targetFile)
+	if cmdReader, err := cmd.StdoutPipe(); err != nil {
+		fmt.Println("Error", err)
+		os.Exit(1)
+	} else {
+		done = make(chan struct{})
+		scanner := bufio.NewScanner(cmdReader)
+		go func() {
+			for scanner.Scan() {
+				newLineByte := []byte("\n")
+				logEntry := append(scanner.Bytes(), newLineByte...)
+				buffer.Write(logEntry)
+			}
+			done <- struct{}{}
+		}()
+	}
+
+	if err := cmd.Start(); err != nil {
+		fmt.Fprintf(os.Stderr, "Error starting Cmd", err)
+		os.Exit(1)
+	}
+	<-done
+
+	if err := cmd.Wait(); err != nil {
+		fmt.Fprintln(os.Stderr, "Error waiting for Cmd", err)
+		os.Exit(1)
+	}
 }
