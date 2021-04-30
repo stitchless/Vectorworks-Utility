@@ -92,6 +92,7 @@ func parseSerial(serial string) [4]string {
 		serialTags[0] = "Viewer"
 	default:
 		serialTags[0] = ""
+		// TODO: pass info to report missing tag
 	}
 
 	switch parsedString[2] {
@@ -101,6 +102,9 @@ func parseSerial(serial string) [4]string {
 		serialTags[1] = "Mac"
 	case "W":
 		serialTags[1] = "Windows"
+	default:
+		serialTags[1] = ""
+		// TODO: pass info to report missing tag
 	}
 
 	local := strings.Join(parsedString[3:5], "")
@@ -125,6 +129,7 @@ func parseSerial(serial string) [4]string {
 		serialTags[2] = "Belgium"
 	default:
 		serialTags[2] = ""
+		// TODO: pass info to report missing tag
 	}
 
 	switch parsedString[5] {
@@ -144,6 +149,7 @@ func parseSerial(serial string) [4]string {
 		serialTags[3] = "Internal"
 	default:
 		serialTags[3] = ""
+		// TODO: pass info to report missing tag
 	}
 	return serialTags
 }
