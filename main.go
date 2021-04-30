@@ -25,7 +25,9 @@ func loop() {
 }
 
 func main() {
+	// 0 == WindowFlagsNone
+	var gMasterWindowFlags g.MasterWindowFlags = 0
 	// imgui docs: https://github.com/AllenDang/imgui-go
-	window := g.NewMasterWindow("Vectorworks Inc.", 1200, 850, g.MasterWindowFlagsNotResizable, LoadFont)
+	window := g.NewMasterWindow("Vectorworks Inc.", 1200, 850, gMasterWindowFlags, LoadFont)
 	window.Run(loop)
 }

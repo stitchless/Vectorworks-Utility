@@ -22,6 +22,9 @@ func RenderTopMenuBar() g.Widget {
 			g.Button(string(activeFeature)).Size(-1, 30).OnClick(func() {
 				fmt.Println(currentFeature, activeFeature)
 				currentFeature = activeFeature
+				if activeFeature == featureSettings {
+					ShowSettings()
+				}
 			}).Build()
 		}
 		imgui.EndTable()
