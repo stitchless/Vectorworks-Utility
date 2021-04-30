@@ -49,17 +49,14 @@ func RenderShowSerials() g.Widget {
 						}).Build()
 						imgui.TableNextColumn()
 						serialTags := parseSerial(installation.License.Serial)
+						// Inner table to show all available serial tags
 						imgui.BeginTable("##"+softwareName+"Tags", 4, imgui.TableFlags_SizingFixedFit, imgui.Vec2{X: 500, Y: -1}, 0)
 						imgui.TableNextRow(0, 25)
 						for _, tag := range serialTags {
 							imgui.TableNextColumn()
 							imgui.Selectable(tag)
-							//imgui.Button(tag)
 						}
 						imgui.EndTable()
-						//imgui.Text(serialTags)
-						//imgui.ButtonV(installation.License.Serial+"##"+softwareName, imgui.Vec2{X: -1, Y: 30})
-						//imgui.Text(installation.License.Serial)
 					}
 
 					imgui.EndTable()
