@@ -15,10 +15,6 @@ import (
 var buffer bytes.Buffer
 var done chan struct{}
 
-func init() {
-	//done = make(chan struct{})
-}
-
 func RenderTraceApplication() g.Widget {
 	return g.Custom(func() {
 		if featureTraceApplication == currentFeature {
@@ -29,22 +25,24 @@ func RenderTraceApplication() g.Widget {
 					if err != nil {
 						log.Println(err)
 					} else {
+						buffer.Reset()
 						targetFile = confirmTargetFile(targetFile)
 						go runApplication(targetFile)
 					}
 				}),
 			).Build()
-			imgui.BeginChildV("showTraceApplication##TraceWindow", imgui.Vec2{X: -1, Y: float32(WindowSize.Height - 120)}, true, 0)
-			imgui.Text(buffer.String())
+			imgui.BeginChildV("showTraceApplication##traceWindow", imgui.Vec2{X: -1, Y: float32(WindowSize.Height - 120)}, true, 0)
+			bufferString := buffer.String()
+			// 14 == InputTextFlagsReadOnly | 16 == InputTextFlagsNoUndoRedo || InputText.go
+			imgui.InputTextMultilineV("##traceLogs", &bufferString, imgui.Vec2{X: -1, Y: -1}, 1<<14|1<<16, nil)
 			imgui.EndChild()
-			imgui.Button("Submit")
 		}
 	})
 }
 
 func runApplication(targetFile string) {
-	// TODO: Check if application is still running
-	// TODO: Close channel if application is no longer found
+	// Idea from https://github.com/golang/go/issues/19685
+	//
 	cmd := exec.Command(targetFile)
 	if cmdReader, err := cmd.StdoutPipe(); err != nil {
 		fmt.Println("Error", err)
@@ -63,7 +61,7 @@ func runApplication(targetFile string) {
 	}
 
 	if err := cmd.Start(); err != nil {
-		fmt.Fprintf(os.Stderr, "Error starting Cmd", err)
+		fmt.Fprintln(os.Stderr, "Error starting Cmd", err)
 		os.Exit(1)
 	}
 	<-done
