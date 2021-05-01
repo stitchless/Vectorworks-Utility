@@ -13,6 +13,7 @@ type plistOptions struct {
 }
 
 func confirmTargetFile(targetFile string) string {
+	var err error
 	targetFile, err = getContentTargetFile(targetFile)
 	if err != nil {
 		err = fmt.Errorf("runApplicationError: %v", err)

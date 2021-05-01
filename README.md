@@ -12,3 +12,6 @@ astilectron-bundler
 
 Build arguments:
 -ldflags="-H windowsgui"
+
+used to reduce file size of build
+go build -ldflags="-s -w"
