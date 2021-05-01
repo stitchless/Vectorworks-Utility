@@ -38,6 +38,8 @@ func RenderTraceApplication() g.Widget {
 	})
 }
 
+// runApplication takes a target path, and runs the target.  The stderr and stdout are then captured and passed
+// to a package variable buffer
 func runApplication(targetFile string) {
 	cmd := exec.Command(targetFile)
 
@@ -63,12 +65,12 @@ func runApplication(targetFile string) {
 	cmd.Stderr = logStreamerErr
 
 	if err := cmd.Start(); err != nil {
-		errMessage := "Error starting application, please check your settings and try again... \n" + err.Error()
+		errMessage := "Error starting application, please check your settings and try again... \n" + err.Error()  + "\n"
 		buffer.WriteString(errMessage)
 	}
 
 	if err := cmd.Wait(); err != nil {
-		errMessage := "Lost connection with running application.  Please close and run again. \n" + err.Error()
+		errMessage := "Lost connection with running application.  Please close and run again. \n" + err.Error() + "\n"
 		buffer.WriteString(errMessage)
 	}
 }
