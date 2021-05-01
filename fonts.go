@@ -1,13 +1,11 @@
 package main
 
-
 // Embed and Load fonts for the UI to use
-
 
 import (
 	_ "embed"
 	g "github.com/AllenDang/giu"
-	"github.com/AllenDang/giu/imgui"
+	"github.com/AllenDang/imgui-go"
 )
 
 var (

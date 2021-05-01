@@ -7,3 +7,5 @@ type License struct {
 	Platform string `default:"" json:"platform"`
 	Type     string `default:"" json:"type"`
 }
+
+// TODO: Parse License using the Serial to identify attributes

@@ -2,39 +2,32 @@ package main
 
 import (
 	g "github.com/AllenDang/giu"
-	"github.com/jpeizer/Vectorworks-Utility/internal/software"
-	"github.com/jpeizer/Vectorworks-Utility/internal/window"
+	"github.com/AllenDang/imgui-go"
+	"github.com/jpeizer/Vectorworks-Utility/internal/ui"
 )
 
-var wnd *g.MasterWindow
-
 func loop() {
-	g.SingleWindow("Vectorworks App Utility").Layout(
+	g.SingleWindow("Vectorworks Utility##MainWindow").Layout(
+		// START CONTENT AREA
+		// Static header for all available features
 		g.Line(
-			window.RenderTopMenuBar(),
+			ui.RenderTopMenuBar(),
+			g.Custom(func() {
+				imgui.Separator()
+			}),
 		),
-		g.Separator(),
-		g.Line(
-			window.RenderTraceApplication(),
-			window.RenderEditSerial(),
-			window.RenderDemoWindow(),
-			// TODO: Fill this area with conditional content
-			//window.RenderActiveSoftwareButtons(),
-		),
+		// Feature Content
+		ui.RenderTraceApplication(),
+		ui.RenderShowSerials(),
+		ui.RenderDemoWindow(),
+		// END CONTENT AREA
 	)
-	window.WindowSize.Width, window.WindowSize.Height = wnd.GetSize()
 }
 
 func main() {
-	err := software.GenerateInstalledSoftwareMap()
-	software.Check(err)
-
-	wnd = g.NewMasterWindow(
-		"Vectorworks App Utility",
-		window.WindowSize.Height,
-		window.WindowSize.Height,
-		0,
-		LoadFont,
-	)
-	wnd.Run(loop)
+	// 0 == WindowFlagsNone
+	var gMasterWindowFlags g.MasterWindowFlags = 0
+	// imgui docs: https://github.com/AllenDang/imgui-go
+	window := g.NewMasterWindow("Vectorworks Inc.", 1200, 850, gMasterWindowFlags, LoadFont)
+	window.Run(loop)
 }
