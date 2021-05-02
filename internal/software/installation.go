@@ -1,5 +1,7 @@
 package software
 
+import "strings"
+
 type Installation struct {
 	ID          int
 	SoftwareName
@@ -42,11 +44,17 @@ func FindInstallationsBySoftware(softwareLabel SoftwareName) ([]Installation, er
 			Year:         year,
 			SoftwareName: softwareLabel,
 		}
+		serial := getSerial(installation)
+		serialFirstGroup := strings.Split(serial[0:6], "")
 
 		installation.Properties = findProperties(installation)
 		installation.Directories = findDirectories(installation)
 		installation.License = License{
-			Serial: getSerial(installation),
+			Serial: serial,
+			Local: getLocal(serialFirstGroup),
+			Platform: getPlatform(serialFirstGroup),
+			Activation: getActivation(serialFirstGroup),
+			Type: getType(serialFirstGroup),
 		}
 
 		installations = append(installations, installation)
@@ -54,4 +62,33 @@ func FindInstallationsBySoftware(softwareLabel SoftwareName) ([]Installation, er
 	}
 
 	return installations, nil
+}
+
+func getActivation(serial []string) string {
+	out, OK := licenseActivationMap[serial[0]]; if OK {
+		return out
+	}
+	return "Activation not found"
+}
+
+func getPlatform(serial []string) string {
+	out, OK := licensePlatformMap[serial[2]]; if OK {
+		return out
+	}
+	return "Platform not found"
+}
+
+func getLocal(serial []string) string {
+	local := strings.Join(serial[3:5], "")
+	out, OK := licenseLocalMap[local]; if OK {
+		return out
+	}
+	return "Local not found"
+}
+
+func getType(serial []string) string {
+	out, OK := licenseTypeMap[serial[5]]; if OK {
+		return out
+	}
+	return "License type not found"
 }

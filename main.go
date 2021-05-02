@@ -18,7 +18,7 @@ func loop() {
 		),
 		// Feature Content
 		ui.RenderTraceApplication(),
-		ui.RenderShowSerials(),
+		ui.RenderShowSoftware(),
 		ui.RenderDemoWindow(),
 		// END CONTENT AREA
 	)
