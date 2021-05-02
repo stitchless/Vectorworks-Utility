@@ -43,7 +43,7 @@ func RenderShowSoftware() g.Widget {
 						imgui.TableNextColumn()
 						imgui.Text(installation.Year)
 						imgui.TableNextColumn()
-						g.Button(installation.License.Serial+"##"+softwareName).OnClick(func() {
+						g.Button(installation.License.Serial + "##" + softwareName).OnClick(func() {
 							doSomething(softwareName, installation.ID)
 						}).Build()
 						imgui.TableNextColumn()
