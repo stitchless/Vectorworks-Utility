@@ -18,7 +18,7 @@ func loop() {
 		),
 		// Feature Content
 		ui.RenderTraceApplication(),
-		ui.RenderShowSoftware(),
+		ui.RenderShowSoftware(FontRobotoTitle),
 		ui.RenderDemoWindow(),
 		// END CONTENT AREA
 	)

@@ -17,6 +17,8 @@ var (
 	FontRoboto imgui.Font
 	//go:embed assets/fonts/Roboto-Regular.ttf
 	roboto []byte
+
+	FontRobotoTitle imgui.Font
 )
 
 // LoadFont will load a default font then load addressable fonts that can be
@@ -25,4 +27,5 @@ func LoadFont() {
 	fonts := g.Context.IO().Fonts()
 	fonts.AddFontFromMemoryTTF(nunito, 18)
 	FontRoboto = fonts.AddFontFromMemoryTTF(roboto, 18)
+	FontRobotoTitle = fonts.AddFontFromMemoryTTF(roboto, 22)
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 )
 
-// Start by
+// TODO: Move this to the software OnClick event for better initialization
 func init() {
 	err := software.GenerateInstalledSoftwareMap()
 	if err != nil {
@@ -16,7 +16,7 @@ func init() {
 }
 
 // RenderShowSoftware shows serials of found supported software
-func RenderShowSoftware() g.Widget {
+func RenderShowSoftware(FontRobotoTitle imgui.Font) g.Widget {
 	// Setup table flags
 	const imguiTableFlags imgui.TableFlags = imgui.TableFlags_SizingFixedFit |
 		imgui.TableFlags_RowBg |
@@ -26,50 +26,38 @@ func RenderShowSoftware() g.Widget {
 
 	return g.Custom(func() {
 		if featureSoftware == currentFeature {
+			// Start of software tab bar
+			imgui.BeginTabBar("##SoftwareTabBar")
 			// Run for all active supported software
 			for _, softwareName := range software.AllActiveSoftwareNames {
 				// Test for installations of active software prior to making a table
 				if len(software.AllInstalledSoftwareMap[softwareName]) != 0 {
-					// Spacing before the table entry
-					imgui.Dummy(imgui.Vec2{X: -1, Y: 25})
-					imgui.BeginGroup()
-					imgui.Text(softwareName)
-					// Begin of software table
-					imgui.BeginTable(softwareName+"Table", 3, imguiTableFlags, imgui.Vec2{X: -1, Y: 150}, 0)
-					imgui.TableNextRow(0, 25)
-
-					// Row Content
-					for _, installation := range software.AllInstalledSoftwareMap[softwareName] {
-						imgui.TableNextColumn()
-						imgui.Text(installation.Year)
-						imgui.TableNextColumn()
-						g.Button(installation.License.Serial + "##" + softwareName).OnClick(func() {
-							doSomething(softwareName, installation.ID)
-						}).Build()
-						imgui.TableNextColumn()
-						//serialTags := parseSerial(installation.License.Serial)
-						// Inner table to show all available serial tags
-						imgui.BeginTable("##"+softwareName+"Tags", 4, imgui.TableFlags_SizingFixedFit, imgui.Vec2{X: 500, Y: -1}, 0)
-						imgui.TableNextRow(0, 25)
-						//for _, tag := range serialTags {
-						//	imgui.TableNextColumn()
-						//	imgui.Selectable(tag)
-						//}
-						imgui.TableNextColumn()
-						imgui.Selectable(installation.License.Platform)
-						imgui.TableNextColumn()
-						imgui.Selectable(installation.License.Type)
-						imgui.TableNextColumn()
-						imgui.Selectable(installation.License.Activation)
-						imgui.TableNextColumn()
-						imgui.Selectable(installation.License.Local)
-						imgui.EndTable()
+					// Insert new tab for each installed supported software
+					if imgui.BeginTabItem(softwareName + "##" + softwareName + "TabItem") {
+						// Begin of software year tab bar
+						imgui.BeginTabBar("##" + softwareName + "TabBar")
+						// Find all installed software versions
+						for _, installation := range software.AllInstalledSoftwareMap[softwareName] {
+							// Insert a new tab for all software versions found
+							if imgui.BeginTabItem(installation.Year + "##" + softwareName + installation.Year + "TabItem") {
+								// ----------------------------
+								// LAYOUT FOR SOFTWARE FEATURES
+								// ----------------------------
+								
+								imgui.Text(installation.License.Serial)
+								// Ending the active software version tab content
+								imgui.EndTabItem()
+							}
+						}
+						// Ending the software version tab bar
+						imgui.EndTabBar()
+						// Ending the software name tab content
+						imgui.EndTabItem()
 					}
-
-					imgui.EndTable()
-					imgui.EndGroup()
 				}
 			}
+			// Ending the software name tab bar
+			imgui.EndTabBar()
 		}
 	})
 }
