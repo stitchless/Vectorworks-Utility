@@ -16,7 +16,7 @@ func init() {
 }
 
 // RenderShowSoftware shows serials of found supported software
-func RenderShowSoftware(FontRobotoTitle imgui.Font) g.Widget {
+func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Widget {
 	// Setup table flags
 	const imguiTableFlags imgui.TableFlags = imgui.TableFlags_SizingFixedFit |
 		imgui.TableFlags_RowBg |
@@ -43,8 +43,29 @@ func RenderShowSoftware(FontRobotoTitle imgui.Font) g.Widget {
 								// ----------------------------
 								// LAYOUT FOR SOFTWARE FEATURES
 								// ----------------------------
-								
+								// Software serial label
+								imgui.Dummy(imgui.Vec2{X: -1, Y: 8})
+								imgui.PushFont(fontRobotoTitle)
 								imgui.Text(installation.License.Serial)
+								imgui.PopFont()
+								// Cog Icon button
+								imgui.SameLine()
+								imgui.PushFont(fontAwesome)
+								imgui.Button("\uF013" + "##" + installation.Year + "licenseButton")
+								imgui.PopFont()
+								imgui.Dummy(imgui.Vec2{X: -1, Y: 8})
+
+								// Action bar for selected software year
+								imgui.BeginChildV("##"+softwareName+"Child", imgui.Vec2{X: -1, Y: 40}, true, 0)
+								imgui.Button("Edit Serial")
+								imgui.SameLine()
+								imgui.Button("Remove User Folder")
+								imgui.EndChild()
+
+								// Area to start making changes to the software installation
+								imgui.Text("Area for large actions based on selection above.")
+
+								// ----------------------------
 								// Ending the active software version tab content
 								imgui.EndTabItem()
 							}
