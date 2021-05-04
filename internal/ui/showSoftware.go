@@ -17,7 +17,6 @@ func init() {
 
 var (
 	toggleSerialDetails bool
-	toggleEditSerial bool
 )
 
 //// Clipboard describes the access to the text clipboard of the window manager.
@@ -68,10 +67,22 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 						// LAYOUT FOR SOFTWARE FEATURES
 						// ----------------------------
 						// Software serial label
-						imgui.Dummy(imgui.Vec2{X: -1, Y: 8})
+						imgui.Dummy(imgui.Vec2{X: -1, Y: 5})
 						imgui.PushFont(fontRobotoTitle)
-						imgui.Text(installation.License.Serial)
+						// Flags 2 InputTextFlagsCharsUppercase | 4 InputTextFlagsAutoSelectAll | InputTextFlagsEnterReturnsTrue
+						if imgui.InputTextV("##EditedSerial", &installation.License.Serial, 1<<2|1<<4|1<<5, nil) {
+							software.ReplaceOldSerial(installation, installation.License.Serial)
+							err := software.GenerateInstalledSoftwareMap()
+							if err != nil {
+								fmt.Errorf("error updating internal installation data after serial update %v", err)
+							}
+						}
 						imgui.PopFont()
+						if imgui.IsItemHovered() {
+							imgui.SetTooltip("Insert new serial and press enter to update")
+						}
+
+
 						// Cog Icon button
 						imgui.SameLine()
 						imgui.PushFont(fontAwesome)
@@ -79,6 +90,7 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 							toggleSerialDetails = !toggleSerialDetails
 						}
 						imgui.PopFont()
+						// Show License Tags
 						if toggleSerialDetails {
 							imgui.BeginTable("##softwareTagsTable", 4, imgui.TableFlags_SizingFixedFit, imgui.Vec2{X: -1, Y: 30}, 0)
 							imgui.TableNextColumn()
@@ -97,40 +109,19 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 							imgui.Text(installation.License.Type)
 							imgui.EndTable()
 						}
+						imgui.Dummy(imgui.Vec2{X: -1, Y: 5})
+						imgui.BeginChildV("##softwareContentChild", imgui.Vec2{X: -1, Y: float32(WindowSize.Height - 120)}, true, 0)
 
-						imgui.Dummy(imgui.Vec2{X: -1, Y: 8})
-						// Action bar for selected software year
-						imgui.BeginChildV("##"+softwareName+"Child", imgui.Vec2{X: -1, Y: 40}, true, 0)
-						if imgui.Button("Edit Serial") {
-							toggleEditSerial = !toggleEditSerial
-						}
-						imgui.SameLine()
-						imgui.Button("Remove User Folder")
-						imgui.EndChild()
-
-						//imgui.CurrentIO().SetClipboard(&clipboard)
-						// Area to start making changes to the software installation
 						//////////
 						// Edit Serial
 						//////////
-						// Flags 2 InputTextFlagsCharsUppercase | 4 InputTextFlagsAutoSelectAll | InputTextFlagsEnterReturnsTrue
-						if toggleEditSerial {
-							imgui.Dummy(imgui.Vec2{X: -1, Y: 10})
-							imgui.Text("Insert a new serial and press Enter")
-							if imgui.InputTextV("##EditedSerial", &installation.License.Serial, 1 << 2 | 1 << 4 | 1 << 5, nil) {
-								software.ReplaceOldSerial(installation, installation.License.Serial)
-								err := software.GenerateInstalledSoftwareMap()
-								if err != nil {
-									fmt.Errorf("error updating internal installation data after serial update %v", err)
-								}
-							}
-						}
+						imgui.Text("Testing")
 
 						//////////
 						// Clear User Data
 						//////////
-						
 
+						imgui.EndChild()
 						// ----------------------------
 						// Ending the active software version tab content
 						imgui.EndTabItem()

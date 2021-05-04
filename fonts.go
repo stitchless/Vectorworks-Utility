@@ -34,7 +34,7 @@ func LoadFont() {
 	builder := imgui.NewFontGlyphRangesBuilder()
 	builder.AddText("\uF013")
 	builder.BuildRanges(ranges)
-	fontAwesome = fonts.AddFontFromMemoryTTFV(fa, 18, imgui.DefaultFontConfig, ranges.Data())
+	fontAwesome = fonts.AddFontFromMemoryTTFV(fa, 22, imgui.DefaultFontConfig, ranges.Data())
 	//fontAwesome = fonts.AddFontFromMemoryTTF(fa, 18)
 	fontRobotoTitle = fonts.AddFontFromMemoryTTF(roboto, 22)
 	//fontNunito = fonts.AddFontFromMemoryTTF(nunito, 18)
