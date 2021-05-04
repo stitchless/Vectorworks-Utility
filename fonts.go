@@ -1,10 +1,6 @@
 package main
 
 // Embed and Load fonts for the UI to use
-
-//// #include "IconsFontAwesome5Pro.h"
-//import "C"
-
 import (
 	_ "embed"
 	g "github.com/AllenDang/giu"

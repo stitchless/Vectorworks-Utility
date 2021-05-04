@@ -1,17 +1,9 @@
 # Vectorworks-Utility
 Utility app for the Vectorworks application suite
 
+Mac Build Command: - Compressed \
+`go build -ldflags="-s -w"`
 
-To get started:
-```shell
-go get -u github.com/asticode/go-astilectron-bundler/...
-go install github.com/asticode/go-astilectron-bundler/astilectron-bundler
 
-astilectron-bundler
-```
-
-Build arguments:
--ldflags="-H windowsgui"
-
-used to reduce file size of build
-go build -ldflags="-s -w"
+Windows Build Command: Compressed + no terminal window \
+`go build -ldflags="-s -w -H windowsgui"`

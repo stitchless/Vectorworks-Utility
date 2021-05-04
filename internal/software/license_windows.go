@@ -57,26 +57,26 @@ func getSerialLocation(installation Installation) string {
 	return ""
 }
 
-//func replaceOldSerial(installation Installation, newSerial string) {
-//	serialLocation := getSerialLocation(installation)
-//
-//	key, err := registry.OpenKey(registry.CURRENT_USER, serialLocation, registry.SET_VALUE)
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//
-//	defer func() {
-//		err = key.Close()
-//		if err != nil {
-//			log.Fatal(err)
-//		}
-//	}()
-//
-//	err = key.SetStringValue("User Serial Number", newSerial)
-//	if err != nil {
-//		log.Fatal(err)
-//	}
-//}
+func ReplaceOldSerial(installation Installation, newSerial string) {
+	serialLocation := getSerialLocation(installation)
+
+	key, err := registry.OpenKey(registry.CURRENT_USER, serialLocation, registry.SET_VALUE)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer func() {
+		err = key.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	err = key.SetStringValue("User Serial Number", newSerial)
+	if err != nil {
+		log.Fatal(err)
+	}
+}
 
 //func cleanSerial(serial string) string {
 //	// TODO: Clear empty space (Done)
