@@ -27,10 +27,11 @@ func FindInstallationYears(softwareLabel SoftwareName) []string {
 	return years
 }
 
-func findProperties(installation Installation) []string {
+// setProperties will take in an installation and assign it's properties strings
+func (installation *Installation) setProperties() {
 	switch installation.SoftwareName {
 	case SoftwareVectorworks:
-		return []string{
+		installation.Properties = []string{
 			"net.nemetschek.vectorworks.license." + installation.Year + ".plist",
 			"net.nemetschek.vectorworks." + installation.Year + ".plist",
 			"net.nemetschek.vectorworks.spotlightimporter.plist",
@@ -40,7 +41,7 @@ func findProperties(installation Installation) []string {
 			"net.vectorworks.vectorworks." + installation.Year + ".plist",
 		}
 	case SoftwareVision:
-		return []string{
+		installation.Properties = []string{
 			"com.qtproject.plist",
 			"com.vwvision.Vision" + installation.Year + ".plist",
 			"com.yourcompany.Vision.plist",
@@ -48,21 +49,20 @@ func findProperties(installation Installation) []string {
 			"net.vectorworks.vision.license." + installation.Year + ".plist",
 		}
 	}
-
-	return nil
 }
 
-func findDirectories(installation Installation) []string {
+// setUserData well set all user data based on the target software
+func (installation *Installation) setUserData() {
 	switch installation.SoftwareName {
 	case SoftwareVectorworks:
-		return []string{
+		installation.Directories = []string{
 			HomeDirectory + "/Library/Application\\ Support/Vectorworks\\ RMCache/rm" + installation.Year,
 			HomeDirectory + "/Library/Application\\ Support/Vectorworks\\ Cloud\\ Services",
 			HomeDirectory + "/Library/Application\\ Support/Vectorworks/" + installation.Year,
 			HomeDirectory + "/Library/Application\\ Support/vectorworks-installer-wrapper",
 		}
 	case SoftwareVision:
-		return []string{
+		installation.Directories = []string{
 			HomeDirectory + "/Library/Application\\ Support/Vision/" + installation.Year,
 			HomeDirectory + "/Library/Application\\ Support/VisionUpdater",
 			"/Library/Frameworks/QtConcurrent.framework",
@@ -86,23 +86,34 @@ func findDirectories(installation Installation) []string {
 			"/Library/Frameworks/setup_qt_frameworks.sh",
 		}
 	}
+}
 
-	return nil
+// setRMCache sets the system path for the resource manager cache directory
+func (installation *Installation) setRMCache() {
+	installation.RMCache = HomeDirectory + "/Library/Application\\ Support/Vectorworks\\ RMCache/rm" + installation.Year
+}
+
+// setLogFiles sets all the log files paths for the target software
+func (installation *Installation) setLogFiles() {
+	installation.LogFiles = []string{
+		HomeDirectory + "/Library/Application\\ Support/Vectorworks/" + installation.Year + "/VW User Log Sent.txt",
+		HomeDirectory + "/Library/Application\\ Support/Vectorworks/" + installation.Year + "/VW User Log.txt",
+	}
 }
 
 func (installation Installation) Clean() {
 	plistPath := HomeDirectory + "/Library/Preferences/"
 	// Deletes relevant plist files for select software/version
 	for _, plist := range installation.Properties {
-		err = os.RemoveAll(plistPath + plist)
+		err := os.RemoveAll(plistPath + plist)
 		if err != nil {
 			errors.New("error: could not remove the plist file: " + plistPath + plist)
 		}
 	}
 
 	for _, directory := range installation.Directories {
-		err = os.RemoveAll(directory)
-		if err !- nil {
+		err := os.RemoveAll(directory)
+		if err != nil {
 			errors.New("error: could not delete the directory: " + directory)
 		}
 	}
