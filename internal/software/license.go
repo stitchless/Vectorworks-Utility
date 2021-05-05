@@ -1,5 +1,7 @@
 package software
 
+import "regexp"
+
 // License provides a parsed breakdown of a serial number, including the serial itself
 type License struct {
 	Serial     string `default:"" json:"serial"`
@@ -45,4 +47,17 @@ var licenseTypeMap = map[string]string{
 	"T": "Teacher (Pro Format)",
 	"C": "Teacher (Student Format)",
 	"A": "Internal",
+}
+
+// TODO: Make all serial replacements use this method prior to replacing serial
+// TODO: change string type to new type serial to use as a method
+// cleanSerial will take in a string, remove any empty strings
+// and confirm a regex pattern.  If regex is valid the string is returned.
+func cleanSerial(serial string) string {
+	r := regexp.MustCompile(`(.{6})-(.{6})-(.{6})-(.{6})`)
+	parseSerial := r.FindAllString(serial, -1)
+	if len(parseSerial) != 0 {
+		return parseSerial[0]
+	}
+	panic("ERROR: REPLACE THIS WITH A TOAST SHOWING INVALID INPUT!")
 }

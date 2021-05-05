@@ -1,6 +1,7 @@
 package software
 
 import (
+	"errors"
 	"os"
 	"regexp"
 	"strings"
@@ -93,13 +94,16 @@ func (installation Installation) Clean() {
 	plistPath := HomeDirectory + "/Library/Preferences/"
 	// Deletes relevant plist files for select software/version
 	for _, plist := range installation.Properties {
-		_ = os.RemoveAll(plistPath + plist)
-		//TODO: Add logging for user feedback.
+		err = os.RemoveAll(plistPath + plist)
+		if err != nil {
+			errors.New("error: could not remove the plist file: " + plistPath + plist)
+		}
 	}
-	// TODO: Check for directory after as a way to verify deletion.
 
 	for _, directory := range installation.Directories {
-		_ = os.RemoveAll(directory)
-		// TODO: Implement error checking.
+		err = os.RemoveAll(directory)
+		if err !- nil {
+			errors.New("error: could not delete the directory: " + directory)
+		}
 	}
 }

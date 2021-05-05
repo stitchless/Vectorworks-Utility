@@ -9,7 +9,6 @@ import (
 	"log"
 	"os"
 	"os/exec"
-	"regexp"
 )
 
 type LicenseOpts struct {
@@ -97,16 +96,4 @@ func refreshPList() {
 	if err = cmd.Wait(); err != nil {
 		log.Fatal(err)
 	}
-}
-
-// cleanSerial will take in a string, remove any empty strings
-// and confirm a regex pattern.  If regex is valid the string is returned.
-func cleanSerial(serial string) string {
-	r := regexp.MustCompile(`(.{6})-(.{6})-(.{6})-(.{6})`)
-	parseSerial := r.FindAllString(serial, -1)
-	if len(parseSerial) != 0 {
-		return parseSerial[0]
-		// TODO: REFER TO THIS WHEN PARSING OUT LICENSE MEANING!
-	}
-	panic("ERROR: REPLACE THIS WITH A TOAST SHOWING INVALID INPUT!")
 }

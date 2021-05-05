@@ -103,8 +103,8 @@ func (installation *Installation) setRMCache() {
 func (installation *Installation) setLogFiles() {
 	winAppData := os.Getenv("APPDATA") + "\\"
 	installation.LogFiles = []string{
-		filepath.Join(winAppData, installation.SoftwareName, installation.Year, "VW User Log Sent.txt"),
-		filepath.Join(winAppData, installation.SoftwareName, installation.Year, "VW User Log.txt"),
+		filepath.Join(winAppData, "Nemetschek", installation.SoftwareName, installation.Year, "VW User Log Sent.txt"),
+		filepath.Join(winAppData, "Nemetschek", installation.SoftwareName, installation.Year, "VW User Log.txt"),
 	}
 }
 
@@ -128,9 +128,10 @@ func (installation Installation) Clean() {
 			}
 		}(k)
 	}
-	// TODO: Check for directory after as a way to verify deletion.
 	for _, directory := range installation.Directories {
-		_ = os.RemoveAll(directory)
-		// TODO: Implement error checking.
+		err := os.RemoveAll(directory)
+		if err != nil {
+			errors.New("error: could not delete directory: " + directory)
+		}
 	}
 }

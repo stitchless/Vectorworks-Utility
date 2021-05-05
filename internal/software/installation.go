@@ -2,6 +2,7 @@ package software
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -17,6 +18,14 @@ type Installation struct {
 }
 
 var AllInstalledSoftwareMap = make(map[SoftwareName][]Installation)
+
+// Generate installation map on launch.
+func init() {
+	err := GenerateInstalledSoftwareMap()
+	if err != nil {
+		fmt.Errorf("could not generate installation map for %s: %v", AllActiveSoftwareNames, err)
+	}
+}
 
 // GenerateInstalledSoftwareMap creates a map
 // key: SoftwareName

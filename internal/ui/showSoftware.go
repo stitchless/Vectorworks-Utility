@@ -7,14 +7,6 @@ import (
 	"github.com/jpeizer/Vectorworks-Utility/internal/software"
 )
 
-// TODO: Move this to the software OnClick event for better initialization
-func init() {
-	err := software.GenerateInstalledSoftwareMap()
-	if err != nil {
-		fmt.Errorf("could not generate installation map for %s: %v", software.AllActiveSoftwareNames, err)
-	}
-}
-
 var (
 	toggleSerialDetails bool
 )

@@ -77,13 +77,3 @@ func ReplaceOldSerial(installation Installation, newSerial string) {
 		log.Fatal(err)
 	}
 }
-
-//func cleanSerial(serial string) string {
-//	// TODO: Clear empty space (Done)
-//	// TODO: REGEX confirmation
-//	// TODO: Return error and cancel replacement
-//	r := regexp.MustCompile(`(.{6})-(.{6})-(.{6})-(.{6})`)
-//	serial = strings.TrimSpace(serial)
-//	parseSerial := r.FindAllString(serial, -1)
-//	return parseSerial[0]
-//}
