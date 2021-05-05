@@ -1,6 +1,7 @@
 package software
 
 import (
+	"errors"
 	"fmt"
 	"golang.org/x/sys/windows/registry"
 	"io/ioutil"
@@ -9,21 +10,24 @@ import (
 	"regexp"
 )
 
-func FindInstallationYears(softwareLabel SoftwareName) []string {
+func FindInstallationYears(softwareName SoftwareName) ([]string, error) {
 	var appdataFolder string
 	var years []string
 
 	// Different software has different locations
-	switch softwareLabel {
+	switch softwareName {
 	case SoftwareVectorworks:
 		appdataFolder = os.Getenv("APPDATA") + "/Nemetschek/Vectorworks"
 	case SoftwareVision:
 		appdataFolder = os.Getenv("APPDATA") + "/Vision"
 	default:
-		return nil
+		return nil, errors.New("info: APPDATA not found for provided paths")
 	}
 
-	folders, _ := ioutil.ReadDir(appdataFolder)
+	folders, err := ioutil.ReadDir(appdataFolder)
+	if err != nil {
+		return nil, errors.New("error: could not read the appdata folder")
+	}
 
 	for _, f := range folders {
 		year := regexp.MustCompile("[0-9]+").FindString(f.Name())
@@ -32,7 +36,7 @@ func FindInstallationYears(softwareLabel SoftwareName) []string {
 		}
 	}
 
-	return years
+	return years, nil
 }
 
 // setProperties will take in an installation and assign it's properties strings

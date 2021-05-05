@@ -1,6 +1,9 @@
 package software
 
-import "strings"
+import (
+	"errors"
+	"strings"
+)
 
 type Installation struct {
 	ID int
@@ -37,7 +40,10 @@ func FindInstallationsBySoftware(softwareLabel SoftwareName) ([]Installation, er
 	var installations []Installation
 	var i int
 
-	years := FindInstallationYears(softwareLabel)
+	years, err := FindInstallationYears(softwareLabel)
+	if err != nil {
+		return nil, errors.New("error: issue when searching for installations years in the appdata folder")
+	}
 
 	// Attach configs, versions, and Vectorworks Utility years all into on object then return that object
 	for _, year := range years {
