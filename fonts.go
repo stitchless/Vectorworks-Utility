@@ -8,12 +8,13 @@ import (
 )
 
 var (
+	// TODO: Clean up this mess...
 	// Default Font
 	//go:embed assets/fonts/nunito-sans-v6-latin-regular.ttf
 	nunito []byte
 
 	// FontRoboto Addressable Fonts
-	fontNunito imgui.Font
+	fontRoboto imgui.Font
 	//go:embed assets/fonts/Roboto-Regular.ttf
 	roboto []byte
 
@@ -28,16 +29,20 @@ var (
 // LoadFont will load a default font then load addressable fonts that can be
 // called for individual elements.
 func LoadFont() {
+	// Set up default fonts context
 	fonts := g.Context.IO().Fonts()
+
+	// Add font as default font for context
 	fonts.AddFontFromMemoryTTF(roboto, 18)
+
+	// Add FontAwesome on a per glyph basis
 	ranges := imgui.NewGlyphRanges()
 	builder := imgui.NewFontGlyphRangesBuilder()
 	builder.AddText("\uF013")
 	builder.BuildRanges(ranges)
 	fontAwesome = fonts.AddFontFromMemoryTTFV(fa, 22, imgui.DefaultFontConfig, ranges.Data())
-	//fontAwesome = fonts.AddFontFromMemoryTTF(fa, 18)
-	fontRobotoTitle = fonts.AddFontFromMemoryTTF(roboto, 22)
-	//fontNunito = fonts.AddFontFromMemoryTTF(nunito, 18)
-	//fontAwesome = fonts.AddFontFromMemoryTTF(fa, 18)
 
+	// Add additional fonts that can be called by the application
+	fontRobotoTitle = fonts.AddFontFromMemoryTTF(roboto, 22)
+	fontRoboto = fonts.AddFontFromMemoryTTF(nunito, 18)
 }

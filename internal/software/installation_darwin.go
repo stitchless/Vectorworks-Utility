@@ -7,11 +7,15 @@ import (
 	"strings"
 )
 
-func FindInstallationYears(softwareLabel SoftwareName) []string {
+// TODO: Replace all home directories with GetConfigDirectory
+
+func FindInstallationYears(softwareLabel SoftwareName) ([]string, error) {
 	var years []string
 
 	files, err := os.ReadDir(HomeDirectory + "/Library/Preferences") // gets list of all plist file names
-	Check(err)
+	if err != nil {
+		return nil, errors.New("error: could not get files from local library/Preferences")
+	}
 
 	// returns all license year numbers found in plist file names from the files variable
 	for _, f := range files {
@@ -24,7 +28,7 @@ func FindInstallationYears(softwareLabel SoftwareName) []string {
 		}
 	}
 
-	return years
+	return years, nil
 }
 
 // setProperties will take in an installation and assign it's properties strings

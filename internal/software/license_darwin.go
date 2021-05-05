@@ -44,8 +44,8 @@ func getSerial(installation Installation) string {
 	return plistData.serial[`NNA User License`]
 }
 
-// replaceOldSerial
-func replaceOldSerial(installation Installation, newSerial string) {
+// ReplaceOldSerial
+func ReplaceOldSerial(installation Installation, newSerial string) {
 	licenseLocation := GetSerialLocation(installation)
 	plistFile, err := os.Open(licenseLocation)
 	Check(err)

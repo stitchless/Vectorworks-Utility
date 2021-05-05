@@ -10,6 +10,8 @@ import (
 	"regexp"
 )
 
+
+// TODO: Replace all home directories with GetConfigDirectory
 func FindInstallationYears(softwareName SoftwareName) ([]string, error) {
 	var appdataFolder string
 	var years []string
