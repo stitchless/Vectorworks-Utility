@@ -5,16 +5,16 @@ type featureName string
 
 // hard coded feature names that are possible for all implemented software packages
 const (
-	featureTraceApplication featureName = "Trace Application"
 	featureSoftware         featureName = "Software"
+	featureTraceApplication featureName = "Trace Application"
 	featureDemoWindow       featureName = "Demo Window"
 	featureSettings         featureName = "Settings"
 )
 
 // AllActiveFeatures is a list of all the currently supported features the application supports
 var AllActiveFeatures = []featureName{
-	featureTraceApplication,
 	featureSoftware,
+	featureTraceApplication,
 	featureDemoWindow,
 	featureSettings,
 }

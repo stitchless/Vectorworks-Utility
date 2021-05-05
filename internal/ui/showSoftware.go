@@ -79,6 +79,8 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 						}
 						imgui.PopFont()
 						if imgui.IsItemHovered() {
+							// Introduce timer for the tooltips
+							// https://gist.github.com/toutougabi/f56309cb9f802f34eeddda65eb27cad2
 							imgui.SetTooltip("Insert new serial and press enter to update")
 						}
 
@@ -116,6 +118,9 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 						// Edit Serial
 						//////////
 						imgui.Text("Testing")
+						for _, logFile := range installation.LogFiles {
+							imgui.Text(logFile)
+						}
 
 						//////////
 						// Clear User Data

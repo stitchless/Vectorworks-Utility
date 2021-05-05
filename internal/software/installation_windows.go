@@ -35,41 +35,39 @@ func FindInstallationYears(softwareLabel SoftwareName) []string {
 	return years
 }
 
-func findProperties(installation Installation) []string {
-	// define system variables
+// setProperties will take in an installation and assign it's properties strings
+func (installation *Installation) setProperties() {
 	version := convertYearToVersion(installation.Year)
 
 	switch installation.SoftwareName {
 	case SoftwareVectorworks:
-		return []string{
+		installation.Properties = []string{
 			"SOFTWARE\\Nemetschek\\Vectorworks " + version,
 			"SOFTWARE\\VectorWorks",
 		}
 	case SoftwareVision:
-		return []string{
+		installation.Properties = []string{
 			"ESP Vision",
 			"SOFTWARE\\VectorWorks\\Vision " + installation.Year,
 			"SOFTWARE\\VWVision\\Vision" + installation.Year,
 		}
 	}
-
-	return nil
 }
 
-func findDirectories(installation Installation) []string {
-	// define system variables
+// setUserData well set all user data based on the target software
+func (installation *Installation) setUserData() {
 	winAppData := os.Getenv("APPDATA") + "\\"
 	winLocalAppData := os.Getenv("LOCALAPPDATA") + "\\"
 
+	// Set Directories based on software found
 	switch installation.SoftwareName {
 	case SoftwareVectorworks:
-		return []string{
+		installation.Directories = []string{
 			winAppData + installation.SoftwareName + "\\" + installation.Year,
 			winAppData + installation.SoftwareName + " " + installation.Year + " Installer",
 			winAppData + installation.SoftwareName + " " + installation.Year + " Updater",
 			winAppData + "Nemetschek\\" + installation.SoftwareName + "\\" + installation.Year,
 			winAppData + "Nemetschek\\" + installation.SoftwareName + "\\accounts",
-			winAppData + "Nemetschek\\" + installation.SoftwareName + " RMCache\\rm" + installation.Year,
 			winAppData + "Nemetschek\\" + installation.SoftwareName + " Web Cache",
 			winAppData + "vectorworks-installer",
 			winAppData + "vectorworks-updater",
@@ -78,24 +76,38 @@ func findDirectories(installation Installation) []string {
 			winLocalAppData + "Nemetschek",
 		}
 	case SoftwareVision:
-		return []string{
+		installation.Directories = []string{
 			filepath.Join(winAppData, installation.SoftwareName, installation.Year),
 			filepath.Join(winLocalAppData, "VisionUpdater"),
 		}
 	case SoftwareCloudServices:
-		return []string{
+		installation.Directories = []string{
 			winAppData + "vectorworks-cloud-services-beta",
 			winAppData + "vectorworks-cloud-services",
 			winLocalAppData + "vectorworks-cloud-services-beta-updater",
 		}
 	}
-
-	return nil
 }
 
-func (i Installation) Clean() {
+// setRMCache sets the system path for the resource manager cache directory
+func (installation *Installation) setRMCache() {
+	winAppData := os.Getenv("APPDATA") + "\\"
+	installation.RMCache = winAppData + "Nemetschek\\" + installation.SoftwareName + " RMCache\\rm" + installation.Year
+}
+
+// setLogFiles sets all the log files paths for the target software
+func (installation *Installation) setLogFiles() {
+	winAppData := os.Getenv("APPDATA") + "\\"
+	installation.LogFiles = []string{
+		filepath.Join(winAppData, installation.SoftwareName, installation.Year, "VW User Log Sent.txt"),
+		filepath.Join(winAppData, installation.SoftwareName, installation.Year, "VW User Log.txt"),
+	}
+}
+
+// Clean removes the registry entry for the target software
+func (installation Installation) Clean() {
 	fmt.Println("Hello")
-	for _, property := range i.Properties {
+	for _, property := range installation.Properties {
 		k, err := registry.OpenKey(registry.CURRENT_USER, property, registry.ALL_ACCESS)
 		Check(err)
 
@@ -107,14 +119,13 @@ func (i Installation) Clean() {
 		_ = registry.DeleteKey(k, "")
 
 		func(k registry.Key) {
-			err := k.Close()
-				if err != nil {
+			err = k.Close()
+			if err != nil {
 			}
 		}(k)
 	}
 	// TODO: Check for directory after as a way to verify deletion.
-
-	for _, directory := range i.Directories {
+	for _, directory := range installation.Directories {
 		_ = os.RemoveAll(directory)
 		// TODO: Implement error checking.
 	}

@@ -8,6 +8,8 @@ type Installation struct {
 	Year        string
 	License     License
 	Properties  []string
+	RMCache     string
+	LogFiles    []string
 	Directories []string
 }
 
@@ -47,8 +49,10 @@ func FindInstallationsBySoftware(softwareLabel SoftwareName) ([]Installation, er
 		serial := getSerial(installation)
 		serialFirstGroup := strings.Split(serial[0:6], "")
 
-		installation.Properties = findProperties(installation)
-		installation.Directories = findDirectories(installation)
+		installation.setProperties()
+		installation.setUserData()
+		installation.setRMCache()
+		installation.setLogFiles()
 		installation.License = License{
 			Serial:     serial,
 			Local:      getLocal(serialFirstGroup),

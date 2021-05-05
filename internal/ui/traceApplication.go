@@ -29,11 +29,22 @@ func RenderTraceApplication() g.Widget {
 					}
 				}),
 			).Build()
+			imgui.BeginTabBar("##traceApplicationTabBar")
+			imgui.BeginTabItem("Software Trace##softwareTrace")
 			imgui.BeginChildV("showTraceApplication##traceWindow", imgui.Vec2{X: -1, Y: float32(WindowSize.Height - 120)}, true, 0)
 			bufferString := buffer.String()
 			// 14 == InputTextFlagsReadOnly | 16 == InputTextFlagsNoUndoRedo || InputText.go
 			imgui.InputTextMultilineV("##traceLogs", &bufferString, imgui.Vec2{X: -1, Y: -1}, 1<<14|1<<16, nil)
 			imgui.EndChild()
+			imgui.EndTabItem()
+			imgui.BeginTabItem("Software Logs##softwareLogs")
+			imgui.BeginChildV("showTraceApplication##traceWindow", imgui.Vec2{X: -1, Y: float32(WindowSize.Height - 120)}, true, 0)
+			logBufferString := buffer.String()
+			// 14 == InputTextFlagsReadOnly | 16 == InputTextFlagsNoUndoRedo || InputText.go
+			imgui.InputTextMultilineV("##Logs", &logBufferString, imgui.Vec2{X: -1, Y: -1}, 1<<14|1<<16, nil)
+			imgui.EndChild()
+			imgui.EndTabItem()
+			imgui.EndTabBar()
 		}
 	})
 }
