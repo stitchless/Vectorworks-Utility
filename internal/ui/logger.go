@@ -98,7 +98,7 @@ func (l *Logstreamer) OutputLines() error {
 			if strings.HasSuffix(line, "\n") {
 				l.out(line)
 			} else {
-				// put back into buffer, it's not a complete line yet
+				// put back into traceBuffer, it's not a complete line yet
 				//  Close() or Flush() have to be used to flush out
 				//  the last remaining line if it does not end with a newline
 				if _, err := l.buf.WriteString(line); err != nil {
