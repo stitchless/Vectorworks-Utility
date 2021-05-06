@@ -17,7 +17,7 @@ func loop() {
 			}),
 		),
 		// Feature Content
-		ui.RenderTraceApplication(),
+		ui.RenderLogging(),
 		ui.RenderShowSoftware(fontRobotoTitle, fontAwesome),
 		ui.RenderDemoWindow(),
 		// END CONTENT AREA

@@ -20,7 +20,21 @@ var logBuffer bytes.Buffer
 var readLogs bool = false
 var trailTraceLogs bool
 
-func RenderTraceApplication() g.Widget {
+type vectorworksLogs struct {
+	Ts       string `json:"ts"`
+	LogLvl   int    `json:"log_lvl"`
+	SN       string `json:"sn"`
+	Session  string `json:"session"`
+	VWVer    string `json:"vw_ver"`
+	Platform string `json:"platform"`
+	OSVer    string `json:"os_ver"`
+	Cat      string `json:"cat"`
+	Message  string `json:"message"`
+	Type     string `json:"type"`
+}
+
+// RenderLogging will render all logging UI
+func RenderLogging() g.Widget {
 	return g.Custom(func() {
 		if featureTraceApplication == currentFeature {
 			g.Line(
@@ -65,8 +79,8 @@ func RenderTraceApplication() g.Widget {
 	})
 }
 
-// traceApplication takes a target path, and runs the target.  The stderr and stdout are then captured and passed
-// to a package variable traceBuffer
+// traceApplication takes a target path, and runs the target.  The stderr and stdout are then
+// captured and passed to a package variable traceBuffer
 func traceApplication(targetFile string) {
 
 	cmd := exec.Command(targetFile)
@@ -103,23 +117,30 @@ func traceApplication(targetFile string) {
 	}
 }
 
+
+// TODO: Set up a ticker that will periodically check the logs files for any changes
+// This will be done using the modified date file stat of the file, and compare it
+// against a previous loop, or simply time from current time. (maybe updated in the past 30 seconds)
+// If changes are found set as the active log and begin parsing.
+
+// FIXME: Non-sent logs will be duplicated in the buffer when transferred to the sent log file.
+// A possible solution may have something to do with a string
+// "SentDataDivider ==============================" between jason formats
+// ---
+// This may be a non issue if logs are parsed against other known data such as a time stamp
+// prior to being applied to a buffer
+// Another solution is to read the sent file once and use a ticker the only the non-sent logs.
+// This will still capture all logs without having to rely on parsing and comparing.  This is subject
+// to timing issues where the logs can be sent before the loop is run again.
+// https://github.com/radovskyb/watcher
+// https://github.com/fsnotify/fsnotify
+// showLogs currently shows all logs once for all software found (Vectorworks, and Vision)
 func showLogs() {
 	if !readLogs {
 		readLogs = true
 		for _, softwareName := range software.AllActiveSoftwareNames {
 			// Data Structure:::Log File
-			type logStrcut struct {
-				Ts       string `json:"ts"`
-				LogLvl   int    `json:"log_lvl"`
-				SN       string `json:"sn"`
-				Session  string `json:"session"`
-				VWVer    string `json:"vw_ver"`
-				Platform string `json:"platform"`
-				OSVer    string `json:"os_ver"`
-				Cat      string `json:"cat"`
-				Message  string `json:"message"`
-				Type     string `json:"type"`
-			}
+
 			// Test for installations of active software prior to making a table
 			if len(software.AllInstalledSoftwareMap[softwareName]) == 0 {
 				return
@@ -130,8 +151,7 @@ func showLogs() {
 					if err != nil {
 						errors.New("error: could not open log file" + logFile)
 					}
-
-					var obj logStrcut
+					var obj vectorworksLogs
 
 					scanner := bufio.NewScanner(file)
 					scanner.Split(bufio.ScanLines)
@@ -141,15 +161,7 @@ func showLogs() {
 							errors.New("error: could not unmarshal json")
 						}
 						logBuffer.WriteString("session: " + obj.Session + " message: " + obj.Message + "\n")
-						//fmt.Printf("Message : %s\n", obj.Message)
 					}
-
-
-
-					//lastLine := len(lines) - 2
-					//fmt.Println(lines[lastLine])
-					//fmt.Println(len(lines))
-
 				}
 			}
 		}
