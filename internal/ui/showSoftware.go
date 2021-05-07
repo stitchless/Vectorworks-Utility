@@ -28,12 +28,6 @@ var (
 
 // RenderShowSoftware shows serials of found supported software
 func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Widget {
-	// Setup table flags
-	const imguiTableFlags imgui.TableFlags = imgui.TableFlags_SizingFixedFit |
-		imgui.TableFlags_RowBg |
-		imgui.TableFlags_ScrollX |
-		imgui.TableFlags_BordersOuterH |
-		imgui.TableFlags_BordersOuterV
 
 	return g.Custom(func() {
 		if featureSoftware != currentFeature {
@@ -59,8 +53,9 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 						// LAYOUT FOR SOFTWARE FEATURES
 						// ----------------------------
 						// Software serial label
-						imgui.Dummy(imgui.Vec2{X: -1, Y: 5})
+						imgui.Dummy(imgui.Vec2{X: imgui.ContentRegionAvail().X, Y: 5})
 						imgui.PushFont(fontRobotoTitle)
+						imgui.PushItemWidth(350)
 						// Flags 2 InputTextFlagsCharsUppercase | 4 InputTextFlagsAutoSelectAll | InputTextFlagsEnterReturnsTrue
 						if imgui.InputTextV("##EditedSerial", &installation.License.Serial, 1<<2|1<<4|1<<5, nil) {
 							software.ReplaceOldSerial(installation, installation.License.Serial)
@@ -69,6 +64,7 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 								fmt.Errorf("error updating internal installation data after serial update %v", err)
 							}
 						}
+						imgui.PopItemWidth()
 						imgui.PopFont()
 						if imgui.IsItemHovered() {
 							// Introduce timer for the tooltips
@@ -104,17 +100,24 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 							imgui.EndTable()
 						}
 						imgui.Dummy(imgui.Vec2{X: -1, Y: 5})
-						imgui.BeginChildV("##softwareContentChild", imgui.Vec2{X: -1, Y: float32(WindowSize.Height - 120)}, true, 0)
+						imgui.BeginChildV("##softwareContentChild", imgui.ContentRegionAvail(), true, 0)
 
 						//////////
 						// Edit Serial
 						//////////
-						imgui.Text("Testing")
-						//for _, logFile := range installation.LogFile {
-						//	imgui.Text(logFile)
-						//}
-						imgui.Text(installation.LogFile)
-
+						imgui.BeginTable("##" + installation.Year + "SoftwareActions", 5, imgui.TableFlags_SizingFixedFit, imgui.Vec2{X: -1, Y: 30}, -1)
+						//imgui.TableNextRow(0, 30)
+						imgui.NextColumn()
+						imgui.Text("Resource Manager Cache")
+						imgui.NextColumn()
+						imgui.Button("Clean")
+						imgui.NextColumn()
+						imgui.Button("Rename")
+						imgui.NextColumn()
+						imgui.Text("Test")
+						imgui.NextColumn()
+						imgui.Text("Last")
+						imgui.EndTable()
 						//////////
 						// Clear User Data
 						//////////
