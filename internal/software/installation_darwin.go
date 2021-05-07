@@ -98,11 +98,13 @@ func (installation *Installation) setRMCache() {
 }
 
 // setLogFiles sets all the log files paths for the target software
-func (installation *Installation) setLogFiles() {
-	installation.LogFiles = []string{
-		HomeDirectory + "/Library/Application\\ Support/Vectorworks/" + installation.Year + "/VW User Log Sent.txt",
-		HomeDirectory + "/Library/Application\\ Support/Vectorworks/" + installation.Year + "/VW User Log.txt",
-	}
+func (installation *Installation) setLogFileSent() {
+	installation.LogFileSent = HomeDirectory + "/Library/Application\\ Support/Vectorworks/" + installation.Year + "/VW User Log Sent.txt"
+}
+
+// setLogFiles sets all the log files paths for the target software
+func (installation *Installation) setLogFile() {
+	installation.LogFile = HomeDirectory + "/Library/Application\\ Support/Vectorworks/" + installation.Year + "/VW User Log.txt"
 }
 
 func (installation Installation) Clean() {

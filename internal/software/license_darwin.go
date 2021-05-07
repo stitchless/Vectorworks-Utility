@@ -44,14 +44,13 @@ func getSerial(installation Installation) string {
 	return plistData.serial[`NNA User License`]
 }
 
-// ReplaceOldSerial
 func ReplaceOldSerial(installation Installation, newSerial string) {
 	licenseLocation := GetSerialLocation(installation)
 	plistFile, err := os.Open(licenseLocation)
 	Check(err)
 	err = plistFile.Truncate(0)
 
-	newSerial = cleanSerial(newSerial) // Clean and verify serial
+	newSerial = cleanSerial(newSerial)
 
 	plistData := &LicenseOpts{
 		serial: map[string]string{"NNA User License": newSerial},

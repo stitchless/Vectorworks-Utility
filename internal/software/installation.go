@@ -13,7 +13,8 @@ type Installation struct {
 	License     License
 	Properties  []string
 	RMCache     string
-	LogFiles    []string
+	LogFile     string
+	LogFileSent string
 	Directories []string
 }
 
@@ -34,7 +35,7 @@ func GenerateInstalledSoftwareMap() error {
 	for _, softwareName := range AllActiveSoftwareNames {
 		installations, err := FindInstallationsBySoftware(softwareName)
 		if err != nil {
-			return err
+			return fmt.Errorf("error: software search failed - %v", err)
 		}
 		if len(installations) != 0 {
 			AllInstalledSoftwareMap[softwareName] = installations
@@ -67,7 +68,8 @@ func FindInstallationsBySoftware(softwareLabel SoftwareName) ([]Installation, er
 		installation.setProperties()
 		installation.setUserData()
 		installation.setRMCache()
-		installation.setLogFiles()
+		installation.setLogFile()
+		installation.setLogFileSent()
 		installation.License = License{
 			Serial:     serial,
 			Local:      getLocal(serialFirstGroup),

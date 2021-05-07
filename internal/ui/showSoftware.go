@@ -110,9 +110,10 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 						// Edit Serial
 						//////////
 						imgui.Text("Testing")
-						for _, logFile := range installation.LogFiles {
-							imgui.Text(logFile)
-						}
+						//for _, logFile := range installation.LogFile {
+						//	imgui.Text(logFile)
+						//}
+						imgui.Text(installation.LogFile)
 
 						//////////
 						// Clear User Data

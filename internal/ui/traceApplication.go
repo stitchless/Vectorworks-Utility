@@ -117,7 +117,6 @@ func traceApplication(targetFile string) {
 	}
 }
 
-
 // TODO: Set up a ticker that will periodically check the logs files for any changes
 // This will be done using the modified date file stat of the file, and compare it
 // against a previous loop, or simply time from current time. (maybe updated in the past 30 seconds)
@@ -146,22 +145,20 @@ func showLogs() {
 				return
 			}
 			for _, installation := range software.AllInstalledSoftwareMap[softwareName] {
-				for _, logFile := range installation.LogFiles {
-					file, err := os.Open(logFile)
-					if err != nil {
-						errors.New("error: could not open log file" + logFile)
-					}
-					var obj vectorworksLogs
+				file, err := os.Open(installation.LogFile)
+				if err != nil {
+					errors.New("error: could not open log file" + installation.LogFile)
+				}
+				var obj vectorworksLogs
 
-					scanner := bufio.NewScanner(file)
-					scanner.Split(bufio.ScanLines)
-					for scanner.Scan() {
-						err = json.Unmarshal(scanner.Bytes(), &obj)
-						if err != nil {
-							errors.New("error: could not unmarshal json")
-						}
-						logBuffer.WriteString("session: " + obj.Session + " message: " + obj.Message + "\n")
+				scanner := bufio.NewScanner(file)
+				scanner.Split(bufio.ScanLines)
+				for scanner.Scan() {
+					err = json.Unmarshal(scanner.Bytes(), &obj)
+					if err != nil {
+						errors.New("error: could not unmarshal json")
 					}
+					logBuffer.WriteString("session: " + obj.Session + " message: " + obj.Message + "\n")
 				}
 			}
 		}
