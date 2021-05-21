@@ -54,10 +54,11 @@ func RenderLogging() g.Widget {
 
 			if imgui.BeginTabItem("Software Trace##softwareTraceTabItem") {
 				imgui.BeginChildV("##traceTabWindow", imgui.Vec2{X: -1, Y: float32(WindowSize.Height - 80)}, true, 0)
+				imgui.Checkbox("Trail Logs", &trailTraceLogs)
 				bufferString := traceBuffer.String()
 				// 14 == InputTextFlagsReadOnly | 16 == InputTextFlagsNoUndoRedo || InputText.go
 				imgui.InputTextMultilineV("##traces", &bufferString, imgui.Vec2{X: -1, Y: -1}, 1<<14|1<<16, nil)
-				if imgui.Checkbox("Trail Logs", &trailTraceLogs) {
+				if trailTraceLogs {
 					imgui.SetScrollY(imgui.ScrollMaxY())
 				}
 				imgui.EndChild()
@@ -67,9 +68,12 @@ func RenderLogging() g.Widget {
 			if imgui.BeginTabItem("Software Logs##softwareLogsTabItem") {
 				imgui.BeginChildV("##logTabWindow", imgui.Vec2{X: -1, Y: float32(WindowSize.Height - 80)}, true, 0)
 				logBufferString := logBuffer.String()
+				logWindowHeight := float32(bytes.Count(logBuffer.Bytes(), []byte("\n"))) * imgui.TextLineHeight() + imgui.TextLineHeight()
 				showLogs()
 				// 14 == InputTextFlagsReadOnly | 16 == InputTextFlagsNoUndoRedo || InputText.go
-				imgui.InputTextMultilineV("##showLogs", &logBufferString, imgui.Vec2{X: -1, Y: -1}, 1<<14|1<<16, nil)
+				imgui.InputTextMultilineV("##showLogs", &logBufferString, imgui.Vec2{X: -1, Y: logWindowHeight}, 1<<14|1<<16, nil)
+				imgui.SetScrollHereY(1)
+				//imgui.SetScrollY(imgui.ScrollMaxY())
 				imgui.EndChild()
 				imgui.EndTabItem()
 			}
@@ -158,7 +162,17 @@ func showLogs() {
 					if err != nil {
 						errors.New("error: could not unmarshal json")
 					}
-					logBuffer.WriteString("session: " + obj.Session + " message: " + obj.Message + "\n")
+					var obj vectorworksLogs
+
+					scanner := bufio.NewScanner(file)
+					scanner.Split(bufio.ScanLines)
+					for scanner.Scan() {
+						err = json.Unmarshal(scanner.Bytes(), &obj)
+						if err != nil {
+							errors.New("error: could not unmarshal json")
+						}
+						logBuffer.WriteString("ts: " + obj.Ts + " session: " + obj.Session + " message: " + obj.Message + "\n")
+					}
 				}
 			}
 		}
