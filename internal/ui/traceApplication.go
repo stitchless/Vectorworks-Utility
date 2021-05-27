@@ -37,7 +37,7 @@ type vectorworksLogs struct {
 func RenderLogging() g.Widget {
 	return g.Custom(func() {
 		if featureTraceApplication == currentFeature {
-			g.Line(
+			g.Row(
 				g.Button("Load File...").Size(-1, 30).OnClick(func() {
 
 					targetFile, err := dialog.File().Filter("Application: .exe, .app", "exe", "app").Filter("All Files:  .*", "*").Load()
