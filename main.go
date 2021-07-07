@@ -10,7 +10,7 @@ func loop() {
 	g.SingleWindow("Vectorworks Utility##MainWindow").Layout(
 		// START CONTENT AREA
 		// Static header for all available features
-		g.Line(
+		g.Row(
 			ui.RenderTopMenuBar(),
 			g.Custom(func() {
 				imgui.Separator()
@@ -18,7 +18,7 @@ func loop() {
 		),
 		// Feature Content
 		ui.RenderLogging(),
-		ui.RenderShowSoftware(fontRobotoTitle, fontAwesome),
+		ui.RenderShowSoftware(FontNunito),
 		ui.RenderDemoWindow(),
 		// END CONTENT AREA
 	)
@@ -28,6 +28,7 @@ func main() {
 	// 0 == WindowFlagsNone
 	var gMasterWindowFlags g.MasterWindowFlags = 0
 	// imgui docs: https://github.com/AllenDang/imgui-go
-	window := g.NewMasterWindow("Vectorworks Inc.", 1200, 850, gMasterWindowFlags, LoadFont)
+	window := g.NewMasterWindow("Vectorworks Inc.", 1200, 850, gMasterWindowFlags)
+	//LoadFont()
 	window.Run(loop)
 }

@@ -27,7 +27,7 @@ var (
 //var clipboard Clipboard
 
 // RenderShowSoftware shows serials of found supported software
-func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Widget {
+func RenderShowSoftware(FontAwesome imgui.Font) g.Widget {
 
 	return g.Custom(func() {
 		if featureSoftware != currentFeature {
@@ -54,7 +54,7 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 						// ----------------------------
 						// Software serial label
 						imgui.Dummy(imgui.Vec2{X: imgui.ContentRegionAvail().X, Y: 5})
-						imgui.PushFont(fontRobotoTitle)
+						//imgui.PushFont()
 						imgui.PushItemWidth(350)
 						// Flags 2 InputTextFlagsCharsUppercase | 4 InputTextFlagsAutoSelectAll | InputTextFlagsEnterReturnsTrue
 						if imgui.InputTextV("##EditedSerial", &installation.License.Serial, 1<<2|1<<4|1<<5, nil) {
@@ -65,7 +65,7 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 							}
 						}
 						imgui.PopItemWidth()
-						imgui.PopFont()
+						//imgui.PopFont()
 						if imgui.IsItemHovered() {
 							// Introduce timer for the tooltips
 							// https://gist.github.com/toutougabi/f56309cb9f802f34eeddda65eb27cad2
@@ -75,7 +75,7 @@ func RenderShowSoftware(fontRobotoTitle imgui.Font, fontAwesome imgui.Font) g.Wi
 
 						// Cog Icon button
 						imgui.SameLine()
-						imgui.PushFont(fontAwesome)
+						imgui.PushFont(FontAwesome)
 						if imgui.Button("\uF013" + "##" + installation.Year + "licenseButton") {
 							toggleSerialDetails = !toggleSerialDetails
 						}

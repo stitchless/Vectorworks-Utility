@@ -102,12 +102,15 @@ func (installation *Installation) setRMCache() {
 }
 
 // setLogFiles sets all the log files paths for the target software
-func (installation *Installation) setLogFiles() {
+func (installation *Installation) setLogFileSent() {
 	winAppData := os.Getenv("APPDATA") + "\\"
-	installation.LogFiles = []string{
-		filepath.Join(winAppData, "Nemetschek", installation.SoftwareName, installation.Year, "VW User Log Sent.txt"),
-		filepath.Join(winAppData, "Nemetschek", installation.SoftwareName, installation.Year, "VW User Log.txt"),
-	}
+	installation.LogFileSent = filepath.Join(winAppData, "Nemetschek", installation.SoftwareName, installation.Year, "VW User Log Sent.txt")
+}
+
+// setLogFiles sets all the log files paths for the target software
+func (installation *Installation) setLogFile() {
+	winAppData := os.Getenv("APPDATA") + "\\"
+	installation.LogFile = filepath.Join(winAppData, "Nemetschek", installation.SoftwareName, installation.Year, "VW User Log.txt")
 }
 
 // Clean removes the registry entry for the target software
